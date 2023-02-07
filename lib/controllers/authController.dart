@@ -73,9 +73,9 @@ class AuthController extends GetxController {
         Get.snackbar("Error!!", response['message']);
       }
       await prefs.setString('userid', response['body']['_id'].toString());
-
       print(response['body']['_id']);
       userData.value = UserModel.fromJson(response['body']);
+      clearControllers();
       Get.to(HomeScreen());
     } catch (e) {
       print(e);
@@ -99,6 +99,7 @@ class AuthController extends GetxController {
 
     userData.value = UserModel.fromJson(response['body']);
     Fluttertoast.showToast(msg: "Your account has been created.");
+    clearControllers();
     Get.to(HomeScreen());
     isLoading.value == false;
   }
