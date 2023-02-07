@@ -84,74 +84,7 @@ class Welcome extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              InkWell(
-                onTap: () async => {
-                  Get.defaultDialog(
-                      title: "Login Email and Password",
-                      textConfirm: "Create user",
-                      onConfirm: () async {
-                        _authController.userLogin();
-                        //   var userdata =
-                        //   await FirebaseAuth.instance
-                        //       .signInWithEmailAndPassword(
-                        //           email: _authController.emailController.text
-                        //               .toString(),
-                        //           password: _authController
-                        //               .passwordController.text
-                        //               .toString());
-                        //   print("redasd ${userdata}");
-                        //   final userinfo = <String, dynamic>{
-                        //     "email": "${userdata.user!.email}",
-                        //     "name": userdata.user!.displayName,
-                        //     "born": 1815,
-                        //     "_id": "${userdata.user!.uid}",
-
-                        //   };
-
-                        // var data=  await databse.collection("users").add(userinfo).then(
-                        //       (DocumentReference doc) => print(
-                        //           'DocumentSnapshot added with ID: ${doc}'));
-                      },
-                      content: Container(
-                        child: Column(
-                          children: [
-                            CustomInput(
-                              controller: _authController.emailController,
-                              hint: "Enter email",
-                            ),
-                            SizedBox(height: 10),
-                            CustomInput(
-                              controller: _authController.passwordController,
-                              hint: "Enter password",
-                            ),
-                          ],
-                        ),
-                      )),
-                },
-                child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.black),
-                      // color: Color.fromARGB(255, 189, 174, 174)
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                              height: 40,
-                              child: Image.asset(
-                                  'assets/images/Google_ G _Logo.svg.png')),
-                          SizedBox(
-                            width: 50,
-                          ),
-                          Text("Google login")
-                        ],
-                      ),
-                    )),
-              ),
+         
               SizedBox(
                 height: 10,
               ),

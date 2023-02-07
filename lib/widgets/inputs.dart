@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class CustomInput extends StatelessWidget {
   TextEditingController controller;
   String hint;
-  CustomInput({super.key, required this.controller, required this.hint});
+  String? label;
+  CustomInput({super.key, required this.controller, required this.hint,this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,8 @@ class CustomInput extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: TextField(
           controller: controller,
-          decoration: InputDecoration(border: InputBorder.none, hintText: hint),
+          decoration: InputDecoration(
+              border: InputBorder.none, hintText: hint, label: Text("$label")),
         ),
       ),
     );

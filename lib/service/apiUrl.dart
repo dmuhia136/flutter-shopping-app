@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.1.100:3000/";
+const BASE_URL = "http://192.168.0.104:3000/";
 
 const login = "${BASE_URL}auth/login";
 const userid = "${BASE_URL}auth";

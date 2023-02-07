@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sales_app/controllers/addController.dart';
+import 'package:sales_app/models/product.dart';
 
 class ProductDetails extends StatelessWidget {
-  ProductDetails({super.key});
+  ProductModel product;
+  ProductDetails({super.key, required this.product});
   AddController addController = Get.put(AddController());
   @override
   Widget build(BuildContext context) {
@@ -21,9 +23,12 @@ class ProductDetails extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 15,
                       backgroundColor: Colors.black,
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                        ),
+                        onPressed: (() => Get.back()),
                       ),
                     )),
                 Positioned(
@@ -57,12 +62,12 @@ class ProductDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Grape Fruit",
+                        product.name.toString(),
                         style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       ),
                       Text(
-                        "\$6.20/kg",
+                        "\$ ${product.price}",
                         style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),

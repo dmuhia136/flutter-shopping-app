@@ -39,8 +39,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.lime,
         ),
-        home:  
-        FutureBuilder(
+        home: FutureBuilder(
             future: authController.checkLogin(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -51,11 +50,13 @@ class MyApp extends StatelessWidget {
               }
               if (snapshot.hasData) {
                 return HomeScreen();
+              } else {
+                return Welcome();
               }
 
               return Container();
             })
-        
+
         //  StreamBuilder<User?>(
         //   stream: FirebaseAuth.instance.authStateChanges(),
         //   builder: (context, snapshot) {

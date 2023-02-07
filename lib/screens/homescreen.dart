@@ -12,11 +12,15 @@ import 'package:sales_app/controllers/addController.dart';
 import 'package:sales_app/controllers/authController.dart';
 import 'package:sales_app/controllers/category.dart';
 import 'package:sales_app/controllers/product.dart';
+import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/models/category.dart';
 import 'package:sales_app/models/product.dart';
+import 'package:sales_app/screens/createproduct.dart';
 import 'package:sales_app/screens/messages.dart';
 import 'package:sales_app/screens/product_details.dart';
 import 'package:sales_app/widgets/drawer.dart';
+import 'package:simple_speed_dial/simple_speed_dial.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class HomeScreen extends StatelessWidget {
   String? title;
@@ -52,30 +56,22 @@ class HomeScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              Get.defaultDialog(
-                  title: "Choose a camera",
-                  onCancel: () => Navigator.pop(context),
-                  content: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        InkWell(
-                            onTap: () => {pickImage()}, child: Text("Camera")),
-                        InkWell(
-                            onTap: () {
-                              pickGallary();
-                            },
-                            child: Text("Gallery"))
-                      ],
-                    ),
-                  ));
+          floatingActionButton: SpeedDial(
+            child: Icon(Icons.add),
+            speedDialChildren: <SpeedDialChild>[
+              SpeedDialChild(
+                child: Icon(Icons.insert_emoticon_outlined),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+                label: 'Create new product!',
+                onPressed: () {
+                  Get.to(CreateProduct());
+                },
+                closeSpeedDialOnPressed: false,
+              ),
 
-              // print("dasdasdas,${pick}");
-              // addController.image.value = pick!;
-            },
-            child: Icon(Icons.add_a_photo),
+              //  Your other SpeedDialChildren go here.
+            ],
           ),
           drawer: CustomDrawer(),
           body: SingleChildScrollView(
@@ -85,74 +81,98 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(18.0),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Stack(
-                            children: [
-                              Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: CircleAvatar(
-                                    radius: 5,
-                                    backgroundColor: user != null
-                                        ? Colors.green
-                                        : Colors.grey[900],
-                                  )),
-                              CircleAvatar(
-                                radius: 35,
-                                backgroundImage:
-                                    AssetImage('assets/images/profile.png'),
+                      Functions().userId() == null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Stack(
+                                  children: [
+                                    Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: CircleAvatar(
+                                          radius: 5,
+                                          backgroundColor: user != null
+                                              ? Colors.green
+                                              : Colors.grey[900],
+                                        )),
+                                    CircleAvatar(
+                                      radius: 35,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/profile.png'),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Welcome back,',
+                                      style: GoogleFonts.lato(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                    Text(
+                                      '${authController.userData.value!.firstname} ${authController.userData.value!.lastname}',
+                                      style: GoogleFonts.lato(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        Get.to(Messages());
+                                      },
+                                      child: Icon(Icons.message),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        await authController.logout();
+                                      },
+                                      child: Icon(Icons.logout),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          : Container(
+                              padding: EdgeInsets.only(left: 5, right: 5),
+                              height: MediaQuery.of(context).size.height * 0.1,
+                              decoration: BoxDecoration(
+                                  color: Colors.cyan[50],
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Welcome to our market",
+                                    style: GoogleFonts.lato(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.redAccent,
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("Login"),
+                                    ),
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Welcome back,',
-                                style: GoogleFonts.lato(
-                                    fontSize: 15, fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                '${authController.userData.value!.firstname} ${authController.userData.value!.lastname}',
-                                style: GoogleFonts.lato(
-                                    fontSize: 17, fontWeight: FontWeight.w800),
-                              ),
-                            ],
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              Get.to(Messages());
-                              // showModalBottomSheet(
-                              //     context: context,
-                              //     builder: (BuildContext bc) {
-                              //       return Container(
-                              //         child: new Wrap(
-                              //           children: <Widget>[
-                              //             new ListTile(
-                              //                 leading:
-                              //                     new Icon(Icons.music_note),
-                              //                 title: new Text('Music'),
-                              //                 onTap: () => {}),
-                              //             new ListTile(
-                              //               leading: new Icon(Icons.videocam),
-                              //               title: new Text('Video'),
-                              //               onTap: () => {},
-                              //             ),
-                              //           ],
-                              //         ),
-                              //       );
-                              //     });
-                              // await GoogleSignIn().signOut();
-                            },
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/briefcase.jpg'),
-                            ),
-                          ),
-                        ],
-                      ),
+                            ).animate().slide(),
                       SizedBox(
                         height: 35,
                       ),
@@ -233,31 +253,34 @@ class HomeScreen extends StatelessWidget {
                         child: categoryController.isLoading == true
                             ? Center(child: CircularProgressIndicator())
                             : ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    categoryController.categoryList.length,
-                                itemBuilder: (context, index) {
-                                  CategoryModel category = categoryController
-                                      .categoryList
-                                      .elementAt(index);
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, top: 10, right: 10),
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[700],
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(3.0),
-                                          child: Text(
-                                            category.name.toString(),
-                                            style: GoogleFonts.lato(
-                                                color: Colors.white),
-                                          ),
-                                        )),
-                                  );
-                                }),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount:
+                                        categoryController.categoryList.length,
+                                    itemBuilder: (context, index) {
+                                      CategoryModel category =
+                                          categoryController.categoryList
+                                              .elementAt(index);
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, top: 10, right: 10),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[700],
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(3.0),
+                                              child: Text(
+                                                category.name.toString(),
+                                                style: GoogleFonts.lato(
+                                                    color: Colors.white),
+                                              ),
+                                            )),
+                                      );
+                                    })
+                                .animate()
+                                .moveY(duration: Duration(milliseconds: 1000)),
                       ),
                       const SizedBox(
                         height: 10,
@@ -267,28 +290,36 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: GridView.count(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 4.0,
-                            mainAxisSpacing: 10.0,
-                            children: List.generate(productController.productList.length, (index) {
-                              ProductModel product = productController
-                                  .productList
-                                  .elementAt(index);
-                              return InkWell(
-                                onTap: () => Get.to(ProductDetails()),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8.0, bottom: 8),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/peach.png'))),
-                                    child: Text('${product.name}'),
-                                  ),
-                                ),
-                              );
-                            })),
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 4.0,
+                                mainAxisSpacing: 10.0,
+                                children:
+                                    List.generate(
+                                        productController.productList.length,
+                                        (index) {
+                                  ProductModel product = productController
+                                      .productList
+                                      .elementAt(index);
+                                  return InkWell(
+                                    onTap: () => Get.to(ProductDetails(
+                                      product: product,
+                                    )),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, bottom: 8),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/images/peach.png'))),
+                                        child: Text('${product.name}'),
+                                      ),
+                                    ),
+                                  );
+                                }))
+                            .animate()
+                            .moveY(duration: Duration(milliseconds: 1000))
+                            .fadeIn(),
                       )
                     ],
                   ),

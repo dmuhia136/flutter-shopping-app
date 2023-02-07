@@ -48,6 +48,8 @@ dependencies:
   http:
   flutter_animate: ^3.1.0
   shared_preferences: ^2.0.17
+  simple_speed_dial: ^0.1.7
+  fluttertoast: ^8.1.2
   
 dev_dependencies:
   flutter_test:
