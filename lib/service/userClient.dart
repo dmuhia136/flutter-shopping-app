@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/service/apiUrl.dart';
 import 'package:sales_app/service/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserClient {
-  static createUser(Map<String, dynamic> userdata) async {
+  static loginUser(Map<String, dynamic> userdata) async {
     var response = await DbBase()
         .databaseRequest(login, DbBase().postRequestType, body: userdata);
     var data = jsonDecode(response);
@@ -16,7 +15,7 @@ class UserClient {
   }
 
   static fetchUser() async {
-    final String? id =await Functions().userId();
+    final String? id = await Functions().userId();
     print(userid + "/${id}");
     var response = await DbBase()
         .databaseRequest(userid + "/$id", DbBase().getRequestType);
@@ -24,6 +23,14 @@ class UserClient {
 
     print("iyuuuu data ${data['body']}");
 
+    return data;
+  }
+
+  static createUser(Map<String, dynamic> user) async {
+    var response = await DbBase()
+        .databaseRequest(signup, DbBase().postRequestType, body: user);
+   var data = jsonDecode(response);
+    print("iy data ${data}");
     return data;
   }
 }

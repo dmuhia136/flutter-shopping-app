@@ -6,7 +6,15 @@ class CustomInput extends StatelessWidget {
   TextEditingController controller;
   String hint;
   String? label;
-  CustomInput({super.key, required this.controller, required this.hint,this.label});
+  Icon? icon;
+  bool obscure;
+  CustomInput(
+      {super.key,
+      required this.controller,
+      required this.hint,
+      this.label,
+      this.icon,
+      required this.obscure});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +27,14 @@ class CustomInput extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextField(
+          obscureText: obscure,
           controller: controller,
           decoration: InputDecoration(
-              border: InputBorder.none, hintText: hint, label: Text("$label")),
+              icon: icon,
+              labelStyle: TextStyle(color: Colors.black),
+              border: InputBorder.none,
+              hintText: hint,
+              label: Text("$label")),
         ),
       ),
     );

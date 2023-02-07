@@ -17,6 +17,7 @@ import 'package:sales_app/models/category.dart';
 import 'package:sales_app/models/product.dart';
 import 'package:sales_app/screens/createproduct.dart';
 import 'package:sales_app/screens/messages.dart';
+import 'package:sales_app/screens/onboarding/login.dart';
 import 'package:sales_app/screens/product_details.dart';
 import 'package:sales_app/widgets/drawer.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
@@ -81,98 +82,106 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(18.0),
                   child: Column(
                     children: [
-                      Functions().userId() == null
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Stack(
-                                  children: [
-                                    Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        child: CircleAvatar(
-                                          radius: 5,
-                                          backgroundColor: user != null
-                                              ? Colors.green
-                                              : Colors.grey[900],
-                                        )),
-                                    CircleAvatar(
-                                      radius: 35,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/profile.png'),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Welcome back,',
-                                      style: GoogleFonts.lato(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    Text(
-                                      '${authController.userData.value!.firstname} ${authController.userData.value!.lastname}',
-                                      style: GoogleFonts.lato(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w800),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        Get.to(Messages());
+                    Obx(
+                      ()=> authController.userData.value == null
+                              ?
+                               Container(
+                                  padding: EdgeInsets.only(left: 5, right: 5),
+                                  height: MediaQuery.of(context).size.height * 0.1,
+                                  decoration: BoxDecoration(
+                                      color: Colors.cyan[50],
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Welcome to our market",
+                                        style: GoogleFonts.lato(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      InkWell(onTap: () {
+                                        Get.to(Login());
                                       },
-                                      child: Icon(Icons.message),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () async {
-                                        await authController.logout();
-                                      },
-                                      child: Icon(Icons.logout),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          : Container(
-                              padding: EdgeInsets.only(left: 5, right: 5),
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              decoration: BoxDecoration(
-                                  color: Colors.cyan[50],
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Welcome to our market",
-                                    style: GoogleFonts.lato(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.redAccent,
+                                              border: Border.all(color: Colors.grey),
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Login"),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.redAccent,
-                                        border: Border.all(color: Colors.grey),
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("Login"),
+                                ).animate().slide():  Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: CircleAvatar(
+                                              radius: 5,
+                                              backgroundColor: user != null
+                                                  ? Colors.green
+                                                  : Colors.grey[900],
+                                            )),
+                                        CircleAvatar(
+                                          radius: 35,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/profile.png'),
+                                        ),
+                                      ],
                                     ),
-                                  )
-                                ],
-                              ),
-                            ).animate().slide(),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Welcome back,',
+                                          style: GoogleFonts.lato(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w300),
+                                        ),
+                                        Text(
+                                          '${authController.userData.value!.firstname} ${authController.userData.value!.lastname}',
+                                          style: GoogleFonts.lato(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            Get.to(Messages());
+                                          },
+                                          child: Icon(Icons.message),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            await authController.logout();
+                                          },
+                                          child: Icon(Icons.logout),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                    ),
+                           
+                     
                       SizedBox(
                         height: 35,
                       ),

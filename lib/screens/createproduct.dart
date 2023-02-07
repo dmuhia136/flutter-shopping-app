@@ -39,6 +39,7 @@ class CreateProduct extends StatelessWidget {
                   controller: productController.pnameController,
                   hint: "Product name",
                   label: "Product name:",
+                  obscure: false,
                 ),
                 SizedBox(
                   height: 15,
@@ -47,6 +48,7 @@ class CreateProduct extends StatelessWidget {
                   controller: productController.descriptionController,
                   hint: "Product description",
                   label: "Product descriptions:",
+                  obscure: false,
                 ),
                 SizedBox(
                   height: 15,
@@ -74,6 +76,7 @@ class CreateProduct extends StatelessWidget {
                   controller: productController.countController,
                   hint: "Product count",
                   label: "Product count:",
+                  obscure: false,
                 ),
                 SizedBox(
                   height: 15,
@@ -82,6 +85,7 @@ class CreateProduct extends StatelessWidget {
                   controller: productController.priceController,
                   hint: "Product price",
                   label: "Product price:",
+                  obscure: false,
                 ),
                 SizedBox(
                   height: 15,

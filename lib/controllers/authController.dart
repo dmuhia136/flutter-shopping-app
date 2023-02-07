@@ -14,6 +14,8 @@ class AuthController extends GetxController {
   RxBool isLoading = RxBool(false);
   // User user=User as User;
   TextEditingController emailController = TextEditingController();
+  TextEditingController fnameController = TextEditingController();
+  TextEditingController lnameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   Rxn<UserModel> userData = Rxn<UserModel>(null);
 
@@ -66,7 +68,7 @@ class AuthController extends GetxController {
         "password": passwordController.text
       };
       final prefs = await SharedPreferences.getInstance();
-      var response = await UserClient.createUser(user);
+      var response = await UserClient.loginUser(user);
       if (response['status'] == false) {
         Get.snackbar("Error!!", response['message']);
       }
@@ -78,6 +80,27 @@ class AuthController extends GetxController {
     } catch (e) {
       print(e);
     }
+  }
+
+  userSignUp() async {
+    isLoading.value == true;
+    Map<String, dynamic> user = {
+      "email": emailController.text,
+      "firstname": fnameController.text,
+      "lastname": lnameController.text,
+      "password": passwordController.text
+    };
+
+    var response = await UserClient.createUser(user);
+    print(response['body']);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userid', response['body']['_id'].toString());
+    print(response['body']['_id']);
+
+    userData.value = UserModel.fromJson(response['body']);
+    Fluttertoast.showToast(msg: "Your account has been created.");
+    Get.to(HomeScreen());
+    isLoading.value == false;
   }
 
   logout() async {
@@ -92,5 +115,15 @@ class AuthController extends GetxController {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0);
+    userData.value = null;
+    clearControllers();
+    Get.to(HomeScreen());
+  }
+
+  clearControllers() {
+    emailController.clear();
+    passwordController.clear();
+    fnameController.clear();
+    lnameController.clear();
   }
 }
