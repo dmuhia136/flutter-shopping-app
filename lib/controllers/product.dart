@@ -55,7 +55,20 @@ class ProductController extends GetxController {
       isLoading.value = false;
     } catch (e) {
       print(e);
-      Get.snackbar("mydaserr", "$e");
+    }
+  }
+
+  fetchByCategory(String id) async {
+    try {
+      isLoading.value = true;
+
+      List response = await ProductClient.fetchByCategory(id);
+      productList.assignAll(response.map((e) => ProductModel.fromJson(e)));
+      productList.refresh();
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
     }
   }
 

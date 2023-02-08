@@ -34,14 +34,19 @@ class CustomDrawer extends StatelessWidget {
           Expanded(
             child: Text(""),
           ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Logout"),
+          InkWell(
+            onTap: () {
+              authController.logout();
+            },
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Logout"),
+              ),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Color.fromARGB(255, 7, 156, 182)),
+                  borderRadius: BorderRadius.circular(20)),
             ),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color.fromARGB(255, 7, 156, 182)),
-                borderRadius: BorderRadius.circular(20)),
           ),
         ])).animate().fade(delay: Duration(microseconds: 100)).shimmer();
   }

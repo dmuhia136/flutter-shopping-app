@@ -226,7 +226,6 @@ class HomeScreen extends StatelessWidget {
                                                             return ListTile(
                                                                 title: Row(
                                                                   children: [
-                                                                    Text("${product.productCount}"),
                                                                     Text(product
                                                                         .name
                                                                         .toString()),
@@ -360,23 +359,31 @@ class HomeScreen extends StatelessWidget {
                                       CategoryModel category =
                                           categoryController.categoryList
                                               .elementAt(index);
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 5, top: 10, right: 10),
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[700],
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(3.0),
-                                              child: Text(
-                                                category.name.toString(),
-                                                style: GoogleFonts.lato(
-                                                    color: Colors.white),
-                                              ),
-                                            )),
+                                      return InkWell(
+                                        onTap: () {
+                                          productController
+                                              .fetchByCategory(category.sId.toString());
+                                              productController.productList.refresh();
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 5, top: 10, right: 10),
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[700],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(3.0),
+                                                child: Text(
+                                                  category.name.toString(),
+                                                  style: GoogleFonts.lato(
+                                                      color: Colors.white),
+                                                ),
+                                              )),
+                                        ),
                                       );
                                     })
                                 .animate()
@@ -393,80 +400,82 @@ class HomeScreen extends StatelessWidget {
                                   GoogleFonts.actor(color: Colors.redAccent)),
                         ],
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: productController.productList.length == 0
-                            ? Text("No products yet")
-                            : GridView.count(
-                                    crossAxisCount: 1,
-                                    crossAxisSpacing: 3.0,
-                                    mainAxisSpacing: 1.0,
-                                    scrollDirection: Axis.horizontal,
-                                    children: List.generate(
-                                        productController.productList.length,
-                                        (index) {
-                                      ProductModel product = productController
-                                          .productList
-                                          .elementAt(index);
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0, bottom: 8),
-                                        child: Column(
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                Get.to(ProductDetails(
-                                                  product: product,
-                                                ));
-                                              },
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.1,
-                                                child: LottieBuilder.asset(
-                                                    "assets/images/products.json"),
-                                              ),
-                                            ),
-                                            Text('${product.name}'),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                productController
-                                                    .addToCart(product);
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "${product.name} added to cart");
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    color:
-                                                        CustomColors().primary),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(3.0),
-                                                  child: Text(
-                                                    "Add to cart",
-                                                    style: GoogleFonts.lato(
-                                                        color: Colors.white),
-                                                  ),
+                      Obx(()=>
+                         Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          child:productController.isLoading.value==true?Center(child: CircularProgressIndicator()):  productController.productList.length == 0
+                              ? Text("No products yet")
+                              : GridView.count(
+                                      crossAxisCount: 1,
+                                      crossAxisSpacing: 3.0,
+                                      mainAxisSpacing: 1.0,
+                                      scrollDirection: Axis.horizontal,
+                                      children: List.generate(
+                                          productController.productList.length,
+                                          (index) {
+                                        ProductModel product = productController
+                                            .productList
+                                            .elementAt(index);
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0, bottom: 8),
+                                          child: Column(
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Get.to(ProductDetails(
+                                                    product: product,
+                                                  ));
+                                                },
+                                                child: Container(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.1,
+                                                  child: LottieBuilder.asset(
+                                                      "assets/images/products.json"),
                                                 ),
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    }))
-                                .animate()
-                                .moveY(duration: Duration(milliseconds: 1000))
-                                .fadeIn(),
+                                              Text('${product.name}'),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  productController
+                                                      .addToCart(product);
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "${product.name} added to cart");
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color:
+                                                          CustomColors().primary),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(3.0),
+                                                    child: Text(
+                                                      "Add to cart",
+                                                      style: GoogleFonts.lato(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }))
+                                  .animate()
+                                  .moveY(duration: Duration(milliseconds: 1000))
+                                  .fadeIn(),
+                        ),
                       ),
                       SizedBox(
                         height: 10,

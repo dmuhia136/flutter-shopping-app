@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sales_app/controllers/category.dart';
 import 'package:sales_app/controllers/product.dart';
@@ -23,14 +24,25 @@ class CreateProduct extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Icon(Icons.cancel)),
-              ],
+            Container(
+              width: MediaQuery.of(context).size.width * 1.0,
+              height: 40,
+              child: Row(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Icon(Icons.cancel)),
+                  SizedBox(
+                    width: 70,
+                  ),
+                  Text(
+                    "Create product",
+                    style: GoogleFonts.lato(fontSize: 25),
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: 20,
@@ -67,22 +79,16 @@ class CreateProduct extends StatelessWidget {
                     ? Text("")
                     : Stack(
                         // clipBehavior: Clip.none,
+                        fit: StackFit.loose,
                         children: [
-                          // Positioned(
+                          Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Icon(
+                                Icons.cancel,
+                                color: Colors.redAccent,
+                              )),
 
-                          //     right: 0, top: 0, child: Icon(Icons.cancel,color: Colors.redAccent,)),
-                          InkWell(
-                            onTap: () {
-                              productController.image == null;
-                            },
-                            child: Align(
-                                alignment:
-                                    AlignmentDirectional.topEnd, // <-- SEE HERE
-                                child: Icon(
-                                  Icons.cancel,
-                                  color: Colors.redAccent,
-                                )),
-                          ),
                           Image.file(
                             File(
                               productController.image.path,
@@ -90,6 +96,10 @@ class CreateProduct extends StatelessWidget {
                             height: 30,
                             width: 30,
                           ),
+                          // Icon(
+                          //   Icons.cancel,
+                          //   color: Colors.redAccent,
+                          // ),
                         ],
                       ),
                 SizedBox(
