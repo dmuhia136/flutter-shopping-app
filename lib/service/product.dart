@@ -8,17 +8,16 @@ class ProductClient {
     var response =
         await DbBase().databaseRequest(product, DbBase().getRequestType);
     var data = jsonDecode(response);
-    print(data);
-    return data['body'];
+    print("tdasdas ${data}");
+    return data;
   }
 
-
-    static createProduct(Map<String, dynamic> p) async {
-    var response = await DbBase()
-        .databaseRequest(product + '/create', DbBase().postRequestType, body: p);
+  static createProduct(Map<String, dynamic> products) async {
+    var response = await DbBase().databaseRequest(
+        '$product/create', DbBase().postRequestType,
+        body: products);
     var data = jsonDecode(response);
     print("iy data ${data['body']}");
-
     return data;
   }
 }

@@ -73,7 +73,7 @@ class AuthController extends GetxController {
         Get.snackbar("Error!!", response['message']);
       }
       await prefs.setString('userid', response['body']['_id'].toString());
-      print(response['body']['_id']);
+
       userData.value = UserModel.fromJson(response['body']);
       clearControllers();
       Get.to(HomeScreen());
@@ -95,7 +95,6 @@ class AuthController extends GetxController {
     print(response['body']);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userid', response['body']['_id'].toString());
-    print(response['body']['_id']);
 
     userData.value = UserModel.fromJson(response['body']);
     Fluttertoast.showToast(msg: "Your account has been created.");

@@ -18,7 +18,19 @@ class CustomDrawer extends StatelessWidget {
                 topRight: Radius.circular(20),
                 bottomRight: Radius.circular(20))),
         width: MediaQuery.of(context).size.width * 0.7,
-        child: Column(children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          SizedBox(
+            height: 20,
+          ),
+          CircleAvatar(
+            backgroundImage: AssetImage("assets/images/profile.png"),
+          ),
+          Text(
+              "${authController.userData.value!.firstname} ${authController.userData.value!.lastname}"),
+          SizedBox(
+            height: 10,
+          ),
+          Text("${authController.userData.value!.email} "),
           Expanded(
             child: Text(""),
           ),
@@ -31,7 +43,6 @@ class CustomDrawer extends StatelessWidget {
                 border: Border.all(color: Color.fromARGB(255, 7, 156, 182)),
                 borderRadius: BorderRadius.circular(20)),
           ),
-         
         ])).animate().fade(delay: Duration(microseconds: 100)).shimmer();
-  } 
+  }
 }

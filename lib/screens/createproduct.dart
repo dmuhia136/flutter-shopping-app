@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sales_app/controllers/category.dart';
 import 'package:sales_app/controllers/product.dart';
 import 'package:sales_app/models/category.dart';
@@ -53,6 +56,45 @@ class CreateProduct extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
+                TextButton(
+                    onPressed: () async {
+                      productController.image = (await productController.picker
+                          .pickImage(source: ImageSource.gallery))!;
+                      print(productController.image);
+                    },
+                    child: Text("Select image")),
+                productController.image.path.length == 0
+                    ? Text("")
+                    : Stack(
+                        // clipBehavior: Clip.none,
+                        children: [
+                          // Positioned(
+
+                          //     right: 0, top: 0, child: Icon(Icons.cancel,color: Colors.redAccent,)),
+                          InkWell(
+                            onTap: () {
+                              productController.image == null;
+                            },
+                            child: Align(
+                                alignment:
+                                    AlignmentDirectional.topEnd, // <-- SEE HERE
+                                child: Icon(
+                                  Icons.cancel,
+                                  color: Colors.redAccent,
+                                )),
+                          ),
+                          Image.file(
+                            File(
+                              productController.image.path,
+                            ),
+                            height: 30,
+                            width: 30,
+                          ),
+                        ],
+                      ),
+                SizedBox(
+                  height: 15,
+                ),
                 // Text(categoryController.categoryList.length.toString()),
                 Obx(
                   () => DropdownButton(
@@ -65,8 +107,7 @@ class CreateProduct extends StatelessWidget {
                       }).toList(),
                       onChanged: ((value) {
                         print(value);
-                        productController.categoryId =
-                            "63df420db65db0651f1bee18" as RxString;
+                        productController.categoryId = value as RxString;
                       })),
                 ),
                 SizedBox(

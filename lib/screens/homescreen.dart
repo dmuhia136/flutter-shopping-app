@@ -4,17 +4,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
+import 'package:sales_app/constants/colors.dart';
 import 'package:sales_app/controllers/addController.dart';
 import 'package:sales_app/controllers/authController.dart';
 import 'package:sales_app/controllers/category.dart';
 import 'package:sales_app/controllers/product.dart';
+import 'package:sales_app/controllers/shopcontroller.dart';
 import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/models/category.dart';
 import 'package:sales_app/models/product.dart';
+import 'package:sales_app/models/shop.dart';
 import 'package:sales_app/screens/createproduct.dart';
 import 'package:sales_app/screens/messages.dart';
 import 'package:sales_app/screens/onboarding/login.dart';
@@ -39,6 +44,7 @@ class HomeScreen extends StatelessWidget {
   AuthController authController = Get.put(AuthController());
   CategoryController categoryController = Get.find<CategoryController>();
   ProductController productController = Get.find<ProductController>();
+  ShopController shopController = Get.find<ShopController>();
   User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
@@ -183,6 +189,114 @@ class HomeScreen extends StatelessWidget {
                                         width: 10,
                                       ),
                                       InkWell(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              isDismissible: true,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            25.0)),
+                                              ),
+                                              context: context,
+                                              builder: (BuildContext contex) {
+                                                return Column(
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          color: Colors.white),
+                                                      child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          scrollDirection:
+                                                              Axis.vertical,
+                                                          itemCount:
+                                                              productController
+                                                                  .cart.length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            ProductModel
+                                                                product =
+                                                                productController
+                                                                    .cart
+                                                                    .elementAt(
+                                                                        index);
+                                                            return ListTile(
+                                                                title: Row(
+                                                                  children: [
+                                                                    Text("${product.productCount}"),
+                                                                    Text(product
+                                                                        .name
+                                                                        .toString()),
+                                                                  ],
+                                                                ),
+                                                                trailing: Text(
+                                                                    "\$ ${product.price}"),
+                                                                leading:
+                                                                    LottieBuilder
+                                                                        .asset(
+                                                                            "assets/images/products.json"));
+                                                          }),
+                                                    ),
+                                                    Expanded(child: Text("")),
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.8,
+                                                      height: 35,
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Colors.blue[200],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Text(
+                                                            "Total",
+                                                            style: GoogleFonts
+                                                                .lato(
+                                                                    fontSize:
+                                                                        20,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          Obx(() => Text(
+                                                                productController
+                                                                    .total.value
+                                                                    .toString(),
+                                                                style: GoogleFonts
+                                                                    .lato(
+                                                                        fontSize:
+                                                                            20),
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    )
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        child: CircleAvatar(
+                                            radius: 20,
+                                            child: LottieBuilder.asset(
+                                                "assets/images/lf30_x2lzmtdl.json")),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      InkWell(
                                         onTap: () async {
                                           await authController.logout();
                                         },
@@ -195,40 +309,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         height: 35,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Get your fresh items',
-                                style: GoogleFonts.lato(fontSize: 30),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'with',
-                                    style: GoogleFonts.lato(fontSize: 30),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "Hay Markets",
-                                    style: GoogleFonts.lato(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 30),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -305,41 +385,147 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("Popular products",
+                              style:
+                                  GoogleFonts.actor(color: Colors.redAccent)),
+                        ],
+                      ),
                       Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: GridView.count(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 4.0,
-                                mainAxisSpacing: 10.0,
-                                children:
-                                    List.generate(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: productController.productList.length == 0
+                            ? Text("No products yet")
+                            : GridView.count(
+                                    crossAxisCount: 1,
+                                    crossAxisSpacing: 3.0,
+                                    mainAxisSpacing: 1.0,
+                                    scrollDirection: Axis.horizontal,
+                                    children: List.generate(
                                         productController.productList.length,
                                         (index) {
-                                  ProductModel product = productController
-                                      .productList
-                                      .elementAt(index);
-                                  return InkWell(
-                                    onTap: () => Get.to(ProductDetails(
-                                      product: product,
-                                    )),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8),
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/peach.png'))),
-                                        child: Text('${product.name}'),
-                                      ),
-                                    ),
-                                  );
-                                }))
-                            .animate()
-                            .moveY(duration: Duration(milliseconds: 1000))
-                            .fadeIn(),
+                                      ProductModel product = productController
+                                          .productList
+                                          .elementAt(index);
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8.0, bottom: 8),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Get.to(ProductDetails(
+                                                  product: product,
+                                                ));
+                                              },
+                                              child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.1,
+                                                child: LottieBuilder.asset(
+                                                    "assets/images/products.json"),
+                                              ),
+                                            ),
+                                            Text('${product.name}'),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                productController
+                                                    .addToCart(product);
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "${product.name} added to cart");
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color:
+                                                        CustomColors().primary),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(3.0),
+                                                  child: Text(
+                                                    "Add to cart",
+                                                    style: GoogleFonts.lato(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }))
+                                .animate()
+                                .moveY(duration: Duration(milliseconds: 1000))
+                                .fadeIn(),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("Popular shops",
+                              style:
+                                  GoogleFonts.actor(color: Colors.redAccent)),
+                        ],
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: shopController.shopList.length == 0
+                            ? Text("No shops yet")
+                            : GridView.count(
+                                    crossAxisCount: 1,
+                                    crossAxisSpacing: 3.0,
+                                    mainAxisSpacing: 1.0,
+                                    scrollDirection: Axis.horizontal,
+                                    children:
+                                        List.generate(
+                                            shopController.shopList.length,
+                                            (index) {
+                                      ShopModel shop = shopController.shopList
+                                          .elementAt(index);
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8.0, bottom: 8),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {},
+                                              child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.1,
+                                                child: LottieBuilder.asset(
+                                                    "assets/images/shop.json"),
+                                              ),
+                                            ),
+                                            Text(
+                                              '${shop.name}',
+                                              style: GoogleFonts.lato(),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }))
+                                .animate()
+                                .moveY(duration: Duration(milliseconds: 1000))
+                                .fadeIn(),
                       )
                     ],
                   ),
