@@ -15,6 +15,7 @@ class CreateProduct extends StatelessWidget {
   CreateProduct({super.key});
   ProductController productController = Get.find<ProductController>();
   CategoryController categoryController = Get.find<CategoryController>();
+  String? catId = "Fruits";
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,8 +74,13 @@ class CreateProduct extends StatelessWidget {
                       productController.image = (await productController.picker
                           .pickImage(source: ImageSource.gallery))!;
                       print(productController.image);
+                      await productController.uploadImage(
+                          productController.image.path,
+                          productController.image.name);
                     },
-                    child: Text("Select image")),
+                    child: productController.isUploading.value == true
+                        ? Center(child: CircularProgressIndicator())
+                        : Text("Select image")),
                 productController.image.path.length == 0
                     ? Text("")
                     : Stack(
@@ -117,7 +123,9 @@ class CreateProduct extends StatelessWidget {
                       }).toList(),
                       onChanged: ((value) {
                         print(value);
-                        productController.categoryId = value as RxString;
+                        // productController.categoryId = value as RxString;
+                        catId = value;
+                        productController.categoryId.value = catId!;
                       })),
                 ),
                 SizedBox(
@@ -127,6 +135,7 @@ class CreateProduct extends StatelessWidget {
                   controller: productController.countController,
                   hint: "Product count",
                   label: "Product count:",
+                  type: TextInputType.number,
                   obscure: false,
                 ),
                 SizedBox(
@@ -136,6 +145,7 @@ class CreateProduct extends StatelessWidget {
                   controller: productController.priceController,
                   hint: "Product price",
                   label: "Product price:",
+                  type: TextInputType.number,
                   obscure: false,
                 ),
                 SizedBox(
@@ -144,6 +154,15 @@ class CreateProduct extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     productController.createProduct();
+                    productController.isLoading.isTrue
+                        ? Get.defaultDialog(
+                          onCancel: () {
+                            productController.isLoading.value==false?Navigator.pop(context):null;
+                          },
+                            content: Container(
+                            child: Center(child: CircularProgressIndicator()),
+                          ))
+                        : Text("");
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,

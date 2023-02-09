@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:sales_app/controllers/authController.dart';
+import 'package:sales_app/screens/profile.dart';
 import 'package:sales_app/screens/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,8 +23,14 @@ class CustomDrawer extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          CircleAvatar(
-            backgroundImage: AssetImage("assets/images/profile.png"),
+          InkWell(
+            onTap: () {
+              Get.to(Profile());
+            },
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  authController.userData.value!.profileimage.toString()),
+            ),
           ),
           Text(
               "${authController.userData.value!.firstname} ${authController.userData.value!.lastname}"),

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/models/user.dart';
 import 'package:sales_app/screens/homescreen.dart';
@@ -18,7 +22,10 @@ class AuthController extends GetxController {
   TextEditingController lnameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   Rxn<UserModel> userData = Rxn<UserModel>(null);
-
+  ImagePicker picker = ImagePicker();
+  XFile image = XFile('');
+  RxBool isUploading = RxBool(false);
+  String imageUrl = "";
   Future<UserCredential> signInWithGoogle() async {
     isLoading.value = true;
     // Trigger the authentication flow
@@ -125,5 +132,45 @@ class AuthController extends GetxController {
     passwordController.clear();
     fnameController.clear();
     lnameController.clear();
+  }
+
+  uploadImage(String url, String name) async {
+    try {
+      isUploading.value = true;
+      final _firebaseStorage = FirebaseStorage.instance;
+      var file = File(url);
+      if (image != null) {
+        //Upload to Firebase
+        var snapshot = await _firebaseStorage
+            .ref()
+            .child('images/$name')
+            .putFile(file)
+            .whenComplete(() => null);
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+        print("url da aaaa $downloadUrl");
+        imageUrl = downloadUrl;
+        Fluttertoast.showToast(
+            msg: "Image uploaded",
+            backgroundColor: Colors.green,
+            textColor: Colors.black);
+        isUploading.value = false;
+      } else {
+        Fluttertoast.showToast(
+            msg: "Image upload failed",
+            backgroundColor: Colors.red,
+            textColor: Colors.white);
+        isUploading.value = false;
+        print('No Image Path Received');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  uploadUserImage() async {
+    Map<String, dynamic> image = {"profileimage": imageUrl};
+    var response = await UserClient.uploadUserImage(image);
+
+    await checkLogin();
   }
 }

@@ -11,6 +11,7 @@ class ProductModel {
   CategoryModel? category;
   int? productCount;
   int? productTotal;
+  String? imageurl;
   ProductModel(
       {this.count,
       this.description,
@@ -19,12 +20,14 @@ class ProductModel {
       this.price,
       this.sId,
       this.category,
-      this.productCount,this.productTotal});
+      this.productCount,
+      this.productTotal,this.imageurl});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     description = json['description'];
     name = json['name'];
+    imageurl = json['imageurl'];
     owner = json['owner'] == null ? null : UserModel.fromJson(json['owner']);
     category = json['category'] == null
         ? null

@@ -33,4 +33,13 @@ class UserClient {
     print("iy data ${data}");
     return data;
   }
+
+    static uploadUserImage(Map<String, dynamic> image) async {
+    final String? id = await Functions().userId();
+    var response = await DbBase()
+        .databaseRequest(userid +"/image/$id", DbBase().patchRequestType, body: image);
+   var data = jsonDecode(response);
+    print("iy data ${data}");
+    return data;
+  }
 }

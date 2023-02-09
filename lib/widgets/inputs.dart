@@ -8,13 +8,14 @@ class CustomInput extends StatelessWidget {
   String? label;
   Icon? icon;
   bool obscure;
+  TextInputType? type;
   CustomInput(
       {super.key,
       required this.controller,
       required this.hint,
       this.label,
       this.icon,
-      required this.obscure});
+      required this.obscure,this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,7 @@ class CustomInput extends StatelessWidget {
         child: TextField(
           obscureText: obscure,
           controller: controller,
+          keyboardType:type ,
           decoration: InputDecoration(
               icon: icon,
               labelStyle: TextStyle(color: Colors.black),
