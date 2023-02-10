@@ -308,45 +308,87 @@ class HomeScreen extends StatelessWidget {
                                                 builder: (BuildContext contex) {
                                                   return Column(
                                                     children: [
-                                                      Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            color:
-                                                                Colors.white),
-                                                        child: ListView.builder(
-                                                            shrinkWrap: true,
-                                                            scrollDirection:
-                                                                Axis.vertical,
-                                                            itemCount:
-                                                                productController
-                                                                    .cart
-                                                                    .length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              ProductModel
-                                                                  product =
-                                                                  productController
-                                                                      .cart
-                                                                      .elementAt(
-                                                                          index);
-                                                              return ListTile(
-                                                                  title: Row(
-                                                                    children: [
-                                                                      Text(product
-                                                                          .name
-                                                                          .toString()),
-                                                                    ],
-                                                                  ),
-                                                                  trailing: Text(
-                                                                      "\$ ${product.price}"),
-                                                                  leading: LottieBuilder
-                                                                      .asset(
-                                                                          "assets/images/products.json"));
-                                                            }),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              productController
+                                                                  .clearCart();
+                                                            },
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(4),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: Text(
+                                                                    "Clear"),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Obx(
+                                                        () => Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              color:
+                                                                  Colors.white),
+                                                          child:
+                                                              ListView.builder(
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  scrollDirection:
+                                                                      Axis
+                                                                          .vertical,
+                                                                  itemCount:
+                                                                      productController
+                                                                          .cart
+                                                                          .length,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          index) {
+                                                                    ProductModel
+                                                                        product =
+                                                                        productController
+                                                                            .cart
+                                                                            .elementAt(index);
+                                                                    return ListTile(
+                                                                        title:
+                                                                            Row(
+                                                                          children: [
+                                                                            Text(product.name.toString()),
+                                                                          ],
+                                                                        ),
+                                                                        // subtitle: Text(product
+                                                                        //     .count
+                                                                        //     .toString()),
+                                                                        trailing:
+                                                                            Text(
+                                                                                "\$ ${product.price}"),
+                                                                        leading:
+                                                                            LottieBuilder.asset("assets/images/products.json"));
+                                                                  }),
+                                                        ),
                                                       ),
                                                       Expanded(child: Text("")),
                                                       Container(
@@ -527,8 +569,7 @@ class HomeScreen extends StatelessWidget {
                                             mainAxisSpacing: 1.0,
                                             scrollDirection: Axis.horizontal,
                                             children: List.generate(
-                                                productController.productList
-                                                    .length, (index) {
+                                                productController.productList.length, (index) {
                                               ProductModel product =
                                                   productController.productList
                                                       .elementAt(index);
@@ -616,54 +657,89 @@ class HomeScreen extends StatelessWidget {
                           ],
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          height: MediaQuery.of(context).size.height * 0.2,
-                          child: shopController.shopList.length == 0
-                              ? Text("No shops yet")
-                              : GridView.count(
-                                      crossAxisCount: 1,
-                                      crossAxisSpacing: 3.0,
-                                      mainAxisSpacing: 1.0,
-                                      scrollDirection: Axis.horizontal,
-                                      children:
-                                          List.generate(
-                                              shopController.shopList.length,
-                                              (index) {
-                                        ShopModel shop = shopController.shopList
-                                            .elementAt(index);
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)),
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            child: shopController.shopList.length == 0
+                                ? Text("No shops yet")
+                                : ListView.builder(
+                                    itemCount: shopController.shopList.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (cxt, index) {
+                                      ShopModel shop = shopController.shopList
+                                          .elementAt(index);
+                                      print(shop.sId);
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8.0, bottom: 8),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {},
+                                              child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.1,
+                                                child: LottieBuilder.asset(
+                                                    "assets/images/shop.json"),
+                                              ),
+                                            ),
+                                            Text(
+                                              '${shop.name}',
+                                              style: GoogleFonts.lato(),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    })
 
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8.0, bottom: 8),
-                                          child: Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {},
-                                                child: Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.1,
-                                                  child: LottieBuilder.asset(
-                                                      "assets/images/shop.json"),
-                                                ),
-                                              ),
-                                              Text(
-                                                '${shop.name}',
-                                                style: GoogleFonts.lato(),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }))
-                                  .animate()
-                                  .moveY(duration: Duration(milliseconds: 1000))
-                                  .fadeIn(),
-                        )
+                            //  GridView.count(
+                            //         crossAxisCount: 1,
+                            //         crossAxisSpacing: 3.0,
+                            //         mainAxisSpacing: 1.0,
+                            //         scrollDirection: Axis.horizontal,
+                            //         children:
+                            //             List.generate(
+                            //                 shopController.shopList.length,
+                            //                 (index) {
+                            //           ShopModel shop = shopController.shopList
+                            //               .elementAt(index);
+
+                            //           return Padding(
+                            //             padding: const EdgeInsets.only(
+                            //                 top: 8.0, bottom: 8),
+                            //             child: Column(
+                            //               children: [
+                            //                 InkWell(
+                            //                   onTap: () {},
+                            //                   child: Container(
+                            //                     height: MediaQuery.of(context)
+                            //                             .size
+                            //                             .height *
+                            //                         0.1,
+                            //                     child: LottieBuilder.asset(
+                            //                         "assets/images/shop.json"),
+                            //                   ),
+                            //                 ),
+                            //                 Text(
+                            //                   '${shop.name}',
+                            //                   style: GoogleFonts.lato(),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 5,
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           );
+                            //         }))
+                            //     .animate()
+                            //     .moveY(duration: Duration(milliseconds: 1000))
+                            //     .fadeIn(),
+                            )
                       ],
                     ),
                   ),

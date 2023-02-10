@@ -51,7 +51,8 @@ class ChatController extends GetxController {
           .collection("Messages")
           .doc(authController.userData.value!.sId)
           .collection("mychats")
-          .doc()
+          .doc("${authController.userData.value!.sId}${reciever.sId}")
+          .collection("all").doc()
           .set(chat)
           .onError((e, _) => print("Error writing document: $e"));
 

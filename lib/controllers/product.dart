@@ -36,15 +36,26 @@ class ProductController extends GetxController {
   }
 
   addToCart(ProductModel product) async {
-    int item = cart.indexOf(product);
+    // int item = cart.indexOf(product);
+    // if (item != -1) {
+    //   cart.add(product);
+    //   print("$product is found at index $item");
+    //   product.count = product.count! + 1;
+    //   product.price = product.price! * product.count!;
+    //   total += product.price!;
+    //   print(total);
+    // } else {
+    //   cart.add(product);
+    //   product.count = product.count! + 1;
+    //   product.price = product.price! * product.count!;
+    //   total += product.price!;
+    //   print(total);
+    // }
+  }
 
-    if (item == 1) {
-      cart.add(product);
-      total.value += product.price!;
-    } else {
-      cart.add(product);
-      total.value += product.price!;
-    }
+  clearCart() {
+    cart.clear();
+    total.value = 0;
   }
 
   fetchProducts() async {
@@ -86,7 +97,6 @@ class ProductController extends GetxController {
         "owner": id,
         "category": categoryId.value,
         "imageurl": imageUrl.toString(),
-        
       };
       print(data);
 

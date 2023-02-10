@@ -174,9 +174,7 @@ class AuthController extends GetxController {
   }
 
   fetchAllUsers() async {
-    var id = await Functions().userId();
     List response = await UserClient.fetchAllUsers();
-  //  var data= response.where((element) => element.id != id);
     allUsers.assignAll(response.map((e) => UserModel.fromJson(e)));
   }
 }

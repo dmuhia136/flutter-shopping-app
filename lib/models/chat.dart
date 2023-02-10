@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sales_app/functions/function.dart';
+import 'package:intl/intl.dart';
 
 class ChatModel {
   final String? id;
@@ -54,5 +56,11 @@ class ChatModel {
       if (senderName != null) "senderName": senderName,
       if (sentImg != null) "sentImg": sentImg,
     };
+  }
+
+    getTimeAgo() {
+    print(Time!);
+    return Functions.timeAgoSinceDate(new DateFormat("dd-MM-yyyy h:mma")
+        .format(new DateFormat("yyyy-MM-ddTHH:mm:ss").parse(Time.toString())));
   }
 }

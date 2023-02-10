@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -74,4 +75,12 @@ class Functions {
     }
   }
 
+
+readDate(Timestamp dateTime) {
+    DateTime date = DateTime.parse(dateTime.toDate().toString());
+    // add DateFormat What you want. Look at the below comment example 
+    //String formatedDate = DateFormat('dd-MMM-yyy').format(date); 
+    String formatedDate = DateFormat.yMMMMd().format(date);
+    return formatedDate;
+  }
 }

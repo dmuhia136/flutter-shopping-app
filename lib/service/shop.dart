@@ -16,10 +16,9 @@ class ShopClient {
 
   static createShops(Map<String, dynamic> shopdata) async {
     var response = await DbBase().databaseRequest(
-        "${shop}/create", DbBase().postRequestType,
+        "$shop/create", DbBase().postRequestType,
         body: shopdata);
     var data = jsonDecode(response);
-    print("tydasd $data");
     return data;
   }
 }

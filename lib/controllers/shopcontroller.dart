@@ -11,7 +11,7 @@ class ShopController extends GetxController {
   TextEditingController shopNameController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   RxBool isLoading = RxBool(false);
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -45,6 +45,7 @@ class ShopController extends GetxController {
       }
       await disposer();
       await fetchShops();
+      shopList.refresh();
       isLoading.value = false;
     } catch (e) {
       print(e);

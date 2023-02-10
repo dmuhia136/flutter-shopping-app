@@ -32,7 +32,7 @@ class Contacts extends StatelessWidget {
                         width: 100,
                       ),
                       Text(
-                        "Contacts",
+                        "Contacts ${authController.allUsers.length}",
                         style: GoogleFonts.lato(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       )
@@ -56,7 +56,10 @@ class Contacts extends StatelessWidget {
                       UserModel user = authController.allUsers.elementAt(index);
                       return ListTile(
                         onTap: () {
-                          Get.to(Chat(index: index,user: user,));
+                          Get.to(Chat(
+                            index: index,
+                            user: user,
+                          ));
                         },
                         title: Text(
                           "${user.firstname} ${user.lastname}",

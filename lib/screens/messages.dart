@@ -61,13 +61,18 @@ class Messages extends StatelessWidget {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.9,
-                    child: ListView.builder(
+                    child: 
+                    ListView.builder(
                         itemCount: chatController.chatList.length,
                         shrinkWrap: true,
                         // physics: ScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                         itemBuilder: (context, index) {
                           ChatModel chat =
                               chatController.chatList.elementAt(index);
+                          final timestamp1 = chat.Time; // timestamp in seconds
+                          final DateTime date1 =
+                              DateTime.fromMillisecondsSinceEpoch(timestamp1!);
+                          print(date1);
                           return InkWell(
                             onTap: () {
                               Get.to(Chat(
@@ -80,10 +85,10 @@ class Messages extends StatelessWidget {
                                 title: Text("${chat.recieverName}"),
                                 autofocus: true,
                                 subtitle: Text("${chat.Message}"),
-                                trailing: Text(Functions.timeAgoSinceDate(chat.Time.toString())),
+                                trailing: Text(date1.day.toString()),
                                 leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        "${chat.recieverImg}")),
+                                    backgroundImage:
+                                        NetworkImage("${chat.recieverImg}")),
                               ),
                             ),
                           );

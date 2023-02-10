@@ -55,6 +55,7 @@ class UserClient {
     var response =
         await DbBase().databaseRequest(userid, DbBase().getRequestType);
     var data = jsonDecode(response);
+    print("alluserseee $data");
     return data['body'];
   }
 }
