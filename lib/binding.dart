@@ -15,6 +15,7 @@ class AuthBinding extends Bindings {
     Get.put<AuthController>(AuthController(), permanent: true);
     Get.put<ProductController>(ProductController(), permanent: true);
     Get.put<ShopController>(ShopController(), permanent: true);
+    Get.put<ChatController>(ChatController(), permanent: true);
   
   }
 }

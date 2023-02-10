@@ -21,17 +21,21 @@ class ProductModel {
       this.sId,
       this.category,
       this.productCount,
-      this.productTotal,this.imageurl});
+      this.productTotal,
+      this.imageurl});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     description = json['description'];
     name = json['name'];
     imageurl = json['imageurl'];
-    owner = json['owner'] == null ? null : UserModel.fromJson(json['owner']);
-    category = json['category'] == null
+    owner = json['owner'] == null || json['owner'].toString().length <= 40
         ? null
-        : CategoryModel.fromJson(json['category']);
+        : UserModel.fromJson(json['owner']);
+    category =
+        json['category'] == null || json['category'].toString().length <= 40
+            ? null
+            : CategoryModel.fromJson(json['category']);
     // owner = json['owner'] ;
     sId = json['_id'];
     price = json['price'];

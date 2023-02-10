@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sales_app/controllers/chatController.dart';
+import 'package:sales_app/functions/function.dart';
+import 'package:sales_app/models/user.dart';
 
 class Chat extends StatelessWidget {
   int index;
   bool? sent = true;
-
-  Chat({super.key, required this.index});
+  UserModel? user;
+  Chat({super.key, required this.index, this.user});
   ChatController chatController = Get.find<ChatController>();
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,17 @@ class Chat extends StatelessWidget {
       // bottomNavigationBar: Row(children: [TextField()],),
 
       appBar: AppBar(
-        title: Text("Dennis muhia $index"),
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(user!.profileimage.toString()),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text("${user!.firstname} ${user!.lastname}"),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -87,15 +101,14 @@ class Chat extends StatelessWidget {
               IconButton(
                   onPressed: () async {
                     XFile? data = await chatController.picker
-                        .pickImage(source: ImageSource.camera);
-                  data=  chatController.image.value;
-                    print(chatController.image.value!.path);
-                    // chatController.image.value = data;
+                        .pickImage(source: ImageSource.gallery);
+                    chatController.imageUrl =
+                        await Functions().uploadImage(data!.path, data!.name);
                   },
-                  icon: Icon(Icons.file_upload)),
+                  icon: Icon(Icons.image)),
               InkWell(
                 onTap: () {
-                  chatController.createMessage();
+                  chatController.sendMessage(user);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -107,10 +120,18 @@ class Chat extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Text("Send"),
-                        ],
+                      Obx(
+                        () => Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: chatController.isSending.value == true
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : const Text("Send"),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -9,19 +9,16 @@ class UserClient {
     var response = await DbBase()
         .databaseRequest(login, DbBase().postRequestType, body: userdata);
     var data = jsonDecode(response);
-    print("iy data ${data['body']}");
 
     return data;
   }
 
   static fetchUser() async {
     final String? id = await Functions().userId();
-    print(userid + "/${id}");
+
     var response = await DbBase()
         .databaseRequest(userid + "/$id", DbBase().getRequestType);
     var data = jsonDecode(response);
-
-    print("iyuuuu data ${data['body']}");
 
     return data;
   }
@@ -29,17 +26,35 @@ class UserClient {
   static createUser(Map<String, dynamic> user) async {
     var response = await DbBase()
         .databaseRequest(signup, DbBase().postRequestType, body: user);
-   var data = jsonDecode(response);
-    print("iy data ${data}");
+    var data = jsonDecode(response);
+
     return data;
   }
 
-    static uploadUserImage(Map<String, dynamic> image) async {
+  static uploadUserImage(Map<String, dynamic> image) async {
     final String? id = await Functions().userId();
-    var response = await DbBase()
-        .databaseRequest(userid +"/image/$id", DbBase().patchRequestType, body: image);
-   var data = jsonDecode(response);
-    print("iy data ${data}");
+    var response = await DbBase().databaseRequest(
+        userid + "/image/$id", DbBase().patchRequestType,
+        body: image);
+    var data = jsonDecode(response);
+
     return data;
+  }
+
+  static addShopUser(Map<String, dynamic> shopdata) async {
+    final String? id = await Functions().userId();
+    var response = await DbBase().databaseRequest(
+        "${userid}/shop/$id", DbBase().patchRequestType,
+        body: shopdata);
+
+    var data = jsonDecode(response);
+    return data;
+  }
+
+  static fetchAllUsers() async {
+    var response =
+        await DbBase().databaseRequest(userid, DbBase().getRequestType);
+    var data = jsonDecode(response);
+    return data['body'];
   }
 }

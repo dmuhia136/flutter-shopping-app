@@ -22,6 +22,7 @@ class AuthController extends GetxController {
   TextEditingController lnameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   Rxn<UserModel> userData = Rxn<UserModel>(null);
+  RxList<UserModel> allUsers = RxList<UserModel>([]);
   ImagePicker picker = ImagePicker();
   XFile image = XFile('');
   RxBool isUploading = RxBool(false);
@@ -46,9 +47,11 @@ class AuthController extends GetxController {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  @override
   void onInit() {
     super.onInit();
     checkLogin();
+    fetchAllUsers();
   }
 
   checkLogin() async {
@@ -57,14 +60,10 @@ class AuthController extends GetxController {
         return null;
       }
       var response = await UserClient.fetchUser();
-      print(response);
-      if (response.length > 0) {
-        userData.value = UserModel.fromJson(response['body']);
-      }
-
+      userData.value = UserModel.fromJson(response['body']);
       return response;
     } catch (e) {
-      print("sdadsadadd $e");
+      print("$e");
     }
   }
 
@@ -80,7 +79,6 @@ class AuthController extends GetxController {
         Get.snackbar("Error!!", response['message']);
       }
       await prefs.setString('userid', response['body']['_id'].toString());
-
       userData.value = UserModel.fromJson(response['body']);
       clearControllers();
       Get.to(HomeScreen());
@@ -95,11 +93,13 @@ class AuthController extends GetxController {
       "email": emailController.text,
       "firstname": fnameController.text,
       "lastname": lnameController.text,
-      "password": passwordController.text
+      "password": passwordController.text,
+      "shop": '',
+      "profileimage": ''
     };
 
     var response = await UserClient.createUser(user);
-    print(response['body']);
+    print("iii ${response['body']}");
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userid', response['body']['_id'].toString());
 
@@ -147,7 +147,7 @@ class AuthController extends GetxController {
             .putFile(file)
             .whenComplete(() => null);
         var downloadUrl = await snapshot.ref.getDownloadURL();
-        print("url da aaaa $downloadUrl");
+
         imageUrl = downloadUrl;
         Fluttertoast.showToast(
             msg: "Image uploaded",
@@ -160,7 +160,6 @@ class AuthController extends GetxController {
             backgroundColor: Colors.red,
             textColor: Colors.white);
         isUploading.value = false;
-        print('No Image Path Received');
       }
     } catch (e) {
       print(e);
@@ -172,5 +171,12 @@ class AuthController extends GetxController {
     var response = await UserClient.uploadUserImage(image);
 
     await checkLogin();
+  }
+
+  fetchAllUsers() async {
+    var id = await Functions().userId();
+    List response = await UserClient.fetchAllUsers();
+  //  var data= response.where((element) => element.id != id);
+    allUsers.assignAll(response.map((e) => UserModel.fromJson(e)));
   }
 }

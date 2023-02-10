@@ -58,7 +58,7 @@ class Welcome extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          "E-commerce",
+                          "E-commerce ",
                           style: GoogleFonts.lato(fontWeight: FontWeight.bold),
                         )
                       ],

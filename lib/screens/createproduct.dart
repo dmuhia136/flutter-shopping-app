@@ -156,12 +156,15 @@ class CreateProduct extends StatelessWidget {
                     productController.createProduct();
                     productController.isLoading.isTrue
                         ? Get.defaultDialog(
-                          onCancel: () {
-                            productController.isLoading.value==false?Navigator.pop(context):null;
-                          },
+                            onCancel: () {
+                              Navigator.pop(context);
+                            },
                             content: Container(
-                            child: Center(child: CircularProgressIndicator()),
-                          ))
+                              child: productController.isLoading.value == true
+                                  ? Center(child: CircularProgressIndicator())
+                                  : CircleAvatar(
+                                      radius: 30, child: Icon(Icons.check)),
+                            ))
                         : Text("");
                   },
                   child: Container(

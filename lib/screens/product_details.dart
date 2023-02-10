@@ -44,9 +44,7 @@ class ProductDetails extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 1.0,
                   decoration: BoxDecoration(
                       // color: Color.fromARGB(255, 218, 172, 227),
-                      image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/Bunch_of_grapes_icon.svg.png'))),
+                      image: DecorationImage(image: NetworkImage('${product.imageurl}'))),
                 ),
               ],
             ),

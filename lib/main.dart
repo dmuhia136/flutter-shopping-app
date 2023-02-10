@@ -68,13 +68,10 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
             future: authController.checkLogin(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                // return Center(child: CircularProgressIndicator());
                 return Lottie.asset(
                   'assets/images/Aniki Hamster.json',
                   controller: _controller,
                   onLoaded: (composition) {
-                    // Configure the AnimationController with the duration of the
-                    // Lottie file and start the animation.
                     _controller
                       ..duration = composition.duration
                       ..forward();
@@ -82,28 +79,14 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
                 );
               }
               if (snapshot.hasError) {
-                print(snapshot.error);
+                print("all oooasd ${snapshot.error}");
               }
               if (snapshot.hasData) {
+                print("padsjhbjhdb ${snapshot.data}");
                 return HomeScreen();
-              } else {
+              } 
                 return Welcome();
-              }
-
-              return Container();
-            })
-
-        //  StreamBuilder<User?>(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.hasData) {
-        //       print(snapshot.data);
-        //       return HomeScreen();
-        //     } else {
-        //       return Welcome();
-        //     }
-        //   },
-        // )
-        );
+              
+            }));
   }
 }

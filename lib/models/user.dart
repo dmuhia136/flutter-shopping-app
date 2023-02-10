@@ -1,3 +1,5 @@
+import 'package:sales_app/models/shop.dart';
+
 class UserModel {
   String? firstname;
   String? lastname;
@@ -6,6 +8,7 @@ class UserModel {
   String? sId;
   String? profileimage;
   int? iV;
+  ShopModel? shop;
 
   UserModel(
       {this.firstname,
@@ -14,6 +17,7 @@ class UserModel {
       this.password,
       this.sId,
       this.profileimage,
+      this.shop,
       this.iV});
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +26,10 @@ class UserModel {
     email = json['email'];
     password = json['password'];
     sId = json['_id'];
+    shop:
+    json['shop'] == null || json['shop'].toString().length <= 40
+        ? null
+        : ShopModel.fromJson(json['shop']);
     profileimage = json['profileimage'];
     iV = json['__v'];
   }

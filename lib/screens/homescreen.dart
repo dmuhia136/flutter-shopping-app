@@ -14,6 +14,7 @@ import 'package:sales_app/constants/colors.dart';
 import 'package:sales_app/controllers/addController.dart';
 import 'package:sales_app/controllers/authController.dart';
 import 'package:sales_app/controllers/category.dart';
+import 'package:sales_app/controllers/chatController.dart';
 import 'package:sales_app/controllers/product.dart';
 import 'package:sales_app/controllers/shopcontroller.dart';
 import 'package:sales_app/functions/function.dart';
@@ -25,7 +26,9 @@ import 'package:sales_app/screens/messages.dart';
 import 'package:sales_app/screens/onboarding/login.dart';
 import 'package:sales_app/screens/product_details.dart';
 import 'package:sales_app/screens/profile.dart';
+import 'package:sales_app/widgets/button.dart';
 import 'package:sales_app/widgets/drawer.dart';
+import 'package:sales_app/widgets/inputs.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -45,6 +48,7 @@ class HomeScreen extends StatelessWidget {
   AuthController authController = Get.put(AuthController());
   CategoryController categoryController = Get.find<CategoryController>();
   ProductController productController = Get.find<ProductController>();
+  ChatController chatController = Get.find<ChatController>();
   ShopController shopController = Get.find<ShopController>();
   User? user = FirebaseAuth.instance.currentUser;
   @override
@@ -84,7 +88,69 @@ class HomeScreen extends StatelessWidget {
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.red,
                         label: 'Create shop!',
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                              isDismissible: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(25.0)),
+                              ),
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  padding: EdgeInsets.only(
+                                      left: 10, right: 10, top: 10),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.6,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.4,
+                                          child: Divider(
+                                            color: Colors.grey[600],
+                                            thickness: 2.0,
+                                          )),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomInput(
+                                          controller:
+                                              shopController.shopNameController,
+                                          hint: "Shop Name",
+                                          obscure: false,
+                                          label: "Shop Name"),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      CustomInput(
+                                          controller:
+                                              shopController.locationController,
+                                          hint: "Location",
+                                          obscure: false,
+                                          label: "Location"),
+                                      Expanded(child: Text("")),
+                                      shopController.isLoading.value == true
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : InkWell(
+                                              onTap: () async {
+                                                await shopController
+                                                    .createShops();
+                                              },
+                                              child: CustomButton(
+                                                  text: "Create Shop")),
+                                      SizedBox(
+                                        height: 10,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              });
+                        },
                         closeSpeedDialOnPressed: false,
                       ),
 
@@ -171,7 +237,10 @@ class HomeScreen extends StatelessWidget {
                                             right: 0,
                                             child: CircleAvatar(
                                               radius: 5,
-                                              backgroundColor: user != null
+                                              backgroundColor: user != null ||
+                                                      authController
+                                                              .userData.value !=
+                                                          null
                                                   ? Colors.green
                                                   : Colors.grey[900],
                                             )),
@@ -202,6 +271,12 @@ class HomeScreen extends StatelessWidget {
                                               fontSize: 17,
                                               fontWeight: FontWeight.w800),
                                         ),
+                                        Text(
+                                          '${authController.userData.value!.shop == null ? '' : authController.userData.value!.shop}',
+                                          style: GoogleFonts.lato(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ],
                                     ),
                                     Row(
@@ -211,6 +286,8 @@ class HomeScreen extends StatelessWidget {
                                         InkWell(
                                           onTap: () async {
                                             Get.to(Messages());
+                                            await chatController
+                                                .fetchMessages();
                                           },
                                           child: Icon(Icons.message),
                                         ),
@@ -555,6 +632,7 @@ class HomeScreen extends StatelessWidget {
                                               (index) {
                                         ShopModel shop = shopController.shopList
                                             .elementAt(index);
+
                                         return Padding(
                                           padding: const EdgeInsets.only(
                                               top: 8.0, bottom: 8),

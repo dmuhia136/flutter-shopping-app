@@ -5,4 +5,4 @@ const userid = "${BASE_URL}auth";
 const category = "${BASE_URL}category";
 const product = "${BASE_URL}product";
 const shop = "${BASE_URL}shop";
-const signup = "${BASE_URL}auth/create";
+const signup = "$userid/create";
