@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sales_app/binding.dart';
+import 'package:sales_app/constants/colors.dart';
 import 'package:sales_app/controllers/authController.dart';
 import 'package:sales_app/firebase_options.dart';
 import 'package:sales_app/screens/homescreen.dart';
@@ -62,20 +63,23 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         initialBinding: AuthBinding(),
         title: 'Marketing App',
         theme: ThemeData(
-          primarySwatch: Colors.lime,
+          primarySwatch: Colors.lightGreen
         ),
         home: FutureBuilder(
             future: authController.checkLogin(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Lottie.asset(
-                  'assets/images/Aniki Hamster.json',
-                  controller: _controller,
-                  onLoaded: (composition) {
-                    _controller
-                      ..duration = composition.duration
-                      ..forward();
-                  },
+                return Container(
+                  color: CustomColors().secondary,
+                  child: Lottie.asset(
+                    'assets/images/Aniki Hamster.json',
+                    controller: _controller,
+                    onLoaded: (composition) {
+                      _controller
+                        ..duration = composition.duration
+                        ..forward();
+                    },
+                  ),
                 );
               }
               if (snapshot.hasError) {
