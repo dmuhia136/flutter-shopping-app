@@ -12,4 +12,13 @@ class CategoryClient {
     print(data);
     return data['body'];
   }
+
+  static createCategory(Map<String, dynamic> cat) async {
+    var response = await DbBase().databaseRequest(
+        "$category/create", DbBase().postRequestType,
+        body: cat);
+
+    var data = jsonDecode(response);
+    return data;
+  }
 }

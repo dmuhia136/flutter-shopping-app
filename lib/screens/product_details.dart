@@ -16,36 +16,39 @@ class ProductDetails extends StatelessWidget {
         body: Column(
           children: [
             Stack(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(80),
+                          bottomRight: Radius.circular(80)),
+                      color: Color.fromARGB(255, 218, 172, 227),
+                      image: DecorationImage(
+                          image: NetworkImage('${product.imageurl}'),
+                          fit: BoxFit.fill)),
+                  // child: Image.network('${product.imageurl}', fit: BoxFit.fill),
+                ),
                 Positioned(
                     top: 10,
                     left: 10,
-                    child: CircleAvatar(
-                      radius: 15,
-                      backgroundColor: Colors.black,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        print("object");
+                      },
+                      child: Center(
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.black,
+                          ),
+                          onPressed: (() => Get.back()),
                         ),
-                        onPressed: (() => Get.back()),
                       ),
                     )),
-                Positioned(
-                    top: 10,
-                    right: 5,
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage:
-                          AssetImage('assets/images/briefcase.jpg'),
-                    )),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  width: MediaQuery.of(context).size.width * 1.0,
-                  decoration: BoxDecoration(
-                      // color: Color.fromARGB(255, 218, 172, 227),
-                      image: DecorationImage(image: NetworkImage('${product.imageurl}'))),
-                ),
+            
               ],
             ),
             SizedBox(

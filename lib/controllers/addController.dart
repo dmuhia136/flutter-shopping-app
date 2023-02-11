@@ -14,20 +14,6 @@ class AddController extends GetxController {
   RxList userdata = RxList([]);
   var databse = FirebaseFirestore.instance;
 
-
-    int selectedIndex = 0.obs as int;  
-  static  List<Widget> widgetOptions = <Widget>[  
-   HomeScreen(),  
-   Profile(),
-   Messages()
-  ].obs;  
-  
-  // void _onItemTapped(int index) {  
-  //   setState(() {  
-  //     _selectedIndex = index;  
-  //   });  
-  // }  
-
   void onInit() {
     super.onInit();
     fetchUser();

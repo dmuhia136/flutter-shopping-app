@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sales_app/functions/function.dart';
+import 'package:sales_app/models/product.dart';
 import 'package:sales_app/models/user.dart';
 import 'package:sales_app/screens/homescreen.dart';
 import 'package:sales_app/screens/welcome.dart';
+import 'package:sales_app/service/product.dart';
 import 'package:sales_app/service/userClient.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,6 +25,7 @@ class AuthController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   Rxn<UserModel> userData = Rxn<UserModel>(null);
   RxList<UserModel> allUsers = RxList<UserModel>([]);
+  RxList<ProductModel> userProducts = RxList<ProductModel>([]);
   ImagePicker picker = ImagePicker();
   XFile image = XFile('');
   RxBool isUploading = RxBool(false);
@@ -52,6 +55,13 @@ class AuthController extends GetxController {
     super.onInit();
     checkLogin();
     fetchAllUsers();
+    fetchUserProducts();
+  }
+
+  fetchUserProducts() async {
+    var response = await UserClient.fetchUserProducts();
+    List data = response['body'];
+    userProducts.assignAll(data.map((e) => ProductModel.fromJson(e)));
   }
 
   checkLogin() async {

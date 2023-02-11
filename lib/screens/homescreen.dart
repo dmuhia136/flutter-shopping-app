@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -34,9 +35,15 @@ import 'package:sales_app/widgets/navbar.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   String? title;
   HomeScreen({super.key, this.title});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   List<String> fruits = [
     "Fruits",
     "Vagetables",
@@ -45,15 +52,41 @@ class HomeScreen extends StatelessWidget {
     "Meat",
     "Soft drinks",
   ];
+
   final ImagePicker _picker = ImagePicker();
+
   AddController addController = Get.put(AddController());
+
   AuthController authController = Get.put(AuthController());
+
   CategoryController categoryController = Get.find<CategoryController>();
+
   ProductController productController = Get.find<ProductController>();
+
   ChatController chatController = Get.find<ChatController>();
+
   ShopController shopController = Get.find<ShopController>();
+
   User? user = FirebaseAuth.instance.currentUser;
+
+
+
+
   @override
+
+  int _selectedIndex = 0;  
+  static  List<Widget> _widgetOptions = <Widget>[  
+   HomeScreen(),  
+   Profile(),
+   Messages()
+  ];  
+  
+  void _onItemTapped(int index) {  
+    setState(() {  
+      _selectedIndex = index;  
+    });  
+  }  
+  
   Widget build(BuildContext context) {
     authController.checkLogin();
     final File fileImage = File(addController.image.value.path);
@@ -68,9 +101,20 @@ class HomeScreen extends StatelessWidget {
       final XFile? pick = await _picker.pickImage(source: ImageSource.gallery);
     }
 
+
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: NavBar(),
+
+          bottomNavigationBar: FloatingNavbar(
+      backgroundColor: CustomColors().primary,
+      onTap:_onItemTapped,
+      currentIndex: _selectedIndex,
+      items: [
+        FloatingNavbarItem(icon: Icons.home, title: 'Home'),
+        FloatingNavbarItem(icon: Icons.chat_bubble_outline, title: 'Chats'),
+        FloatingNavbarItem(icon: Icons.settings, title: 'Settings'),
+      ],
+    ),
           floatingActionButton: Obx(
             () => authController.userData.value != null
                 ? SpeedDial(
@@ -83,6 +127,68 @@ class HomeScreen extends StatelessWidget {
                         label: 'Create new product!',
                         onPressed: () {
                           Get.to(CreateProduct());
+                        },
+                        closeSpeedDialOnPressed: false,
+                      ),
+                      SpeedDialChild(
+                        child: Icon(Icons.category),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        label: 'Create new category!',
+                        onPressed: () {
+                          showModalBottomSheet(
+                              isDismissible: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(25.0)),
+                              ),
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  padding: EdgeInsets.only(
+                                      left: 10, right: 10, top: 10),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.4,
+                                          child: Divider(
+                                            color: Colors.grey[600],
+                                            thickness: 2.0,
+                                          )),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomInput(
+                                          controller: categoryController
+                                              .catNameController,
+                                          hint: "Category Name",
+                                          obscure: false,
+                                          enabled: true,
+                                          label: "Category Name"),
+                                      Expanded(child: Text("")),
+                                      shopController.isLoading.value == true
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : InkWell(
+                                              onTap: () async {
+                                                await categoryController
+                                                    .createCategory();
+                                              },
+                                              child: CustomButton(
+                                                  text: "Create Shop")),
+                                      SizedBox(
+                                        height: 10,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              });
                         },
                         closeSpeedDialOnPressed: false,
                       ),
@@ -250,7 +356,9 @@ class HomeScreen extends StatelessWidget {
                                                   : Colors.grey[900],
                                             )),
                                         InkWell(
-                                          onTap: () {
+                                          onTap: () async {
+                                            await authController
+                                                .fetchUserProducts();
                                             Get.to(Profile());
                                           },
                                           child: CircleAvatar(
@@ -489,8 +597,7 @@ class HomeScreen extends StatelessWidget {
                                             0, 3), // changes position of shadow
                                       ),
                                     ]),
-                                child: Text("Search pinnaple"
-                                ),
+                                child: Text("Search pinnaple"),
                               ),
                             ),
                             const CircleAvatar(

@@ -37,15 +37,18 @@ class ProductController extends GetxController {
   }
 
   addToCart(ProductModel product) async {
+      cart.add(product);
+
     // int item = cart.indexOf(product);
     // if (item != -1) {
     //   cart.add(product);
     //   print("$product is found at index $item");
-    //   product.count = product.count! + 1;
-    //   product.price = product.price! * product.count!;
+    //   // product.count = product.count! + 1;
+    //   // product.price = product.price! * product.count!;
     //   total += product.price!;
     //   print(total);
-    // } else {
+    // }
+    //  else {
     //   cart.add(product);
     //   product.count = product.count! + 1;
     //   product.price = product.price! * product.count!;
