@@ -82,7 +82,6 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
                 print("all oooasd ${snapshot.error}");
               }
               if (snapshot.hasData) {
-                print("padsjhbjhdb ${snapshot.data}");
                 return HomeScreen();
               } 
                 return Welcome();

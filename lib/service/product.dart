@@ -17,7 +17,6 @@ class ProductClient {
     var response = await DbBase()
         .databaseRequest(product + "/category/$id", DbBase().getRequestType);
     var data = jsonDecode(response);
-    print("tdasdas ${data}");
     return data['body'];
   }
 

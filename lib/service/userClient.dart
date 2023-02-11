@@ -55,12 +55,11 @@ class UserClient {
     var response =
         await DbBase().databaseRequest(userid, DbBase().getRequestType);
     var data = jsonDecode(response);
-    print("alluserseee $data");
     return data['body'];
   }
+
   static fetchUserProducts() async {
     final id = await Functions().userId();
-      print("my urlsasd $userid/user/$id");
     var response = await DbBase()
         .databaseRequest("$product/user/$id", DbBase().getRequestType);
     var data = jsonDecode(response);

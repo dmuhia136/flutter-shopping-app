@@ -775,7 +775,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10)),
-                            height: MediaQuery.of(context).size.height * 0.2,
+                            height: MediaQuery.of(context).size.height * 0.4,
                             child: shopController.shopList.length == 0
                                 ? Text("No shops yet")
                                 : ListView.builder(
@@ -796,7 +796,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.1,
+                                                    0.2,
                                                 child: LottieBuilder.asset(
                                                     "assets/images/shop.json"),
                                               ),

@@ -9,7 +9,6 @@ class CategoryClient {
     var response =
         await DbBase().databaseRequest(category, DbBase().getRequestType);
     var data = jsonDecode(response);
-    print(data);
     return data['body'];
   }
 
@@ -17,7 +16,6 @@ class CategoryClient {
     var response = await DbBase().databaseRequest(
         "$category/create", DbBase().postRequestType,
         body: cat);
-
     var data = jsonDecode(response);
     return data;
   }

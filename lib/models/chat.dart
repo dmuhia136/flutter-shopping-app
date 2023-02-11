@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 class ChatModel {
   final String? id;
   final String? Message;
-  final int? Time;
+  final Timestamp? Time;
   final String? recierverId;
   final String? recieverImg;
   final String? recieverName;

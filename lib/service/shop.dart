@@ -8,9 +8,7 @@ class ShopClient {
   static fetchAllShops() async {
     var response =
         await DbBase().databaseRequest(shop, DbBase().getRequestType);
-
     var data = jsonDecode(response);
-    print('shopsaall ${data['body']}');
     return data['body'];
   }
 
