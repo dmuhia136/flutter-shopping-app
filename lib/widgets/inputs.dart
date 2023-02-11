@@ -8,6 +8,7 @@ class CustomInput extends StatelessWidget {
   String? label;
   Icon? icon;
   bool obscure;
+  bool enabled;
   TextInputType? type;
   CustomInput(
       {super.key,
@@ -15,6 +16,7 @@ class CustomInput extends StatelessWidget {
       required this.hint,
       this.label,
       this.icon,
+      required this.enabled,
       required this.obscure,this.type});
 
   @override
@@ -31,7 +33,9 @@ class CustomInput extends StatelessWidget {
           obscureText: obscure,
           controller: controller,
           keyboardType:type ,
+          
           decoration: InputDecoration(
+          enabled: enabled,
               icon: icon,
               labelStyle: TextStyle(color: Colors.black),
               border: InputBorder.none,

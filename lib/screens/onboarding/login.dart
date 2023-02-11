@@ -41,6 +41,7 @@ class Login extends StatelessWidget {
               height: 40,
             ),
             CustomInput(
+              enabled: true,
               controller: authController.emailController,
               hint: "Enter your email",
               label: "Email",
@@ -51,6 +52,7 @@ class Login extends StatelessWidget {
               height: 20,
             ),
             CustomInput(
+              enabled: true,
               controller: authController.passwordController,
               hint: "Enter your password",
               label: "Password",

@@ -26,9 +26,11 @@ import 'package:sales_app/screens/messages.dart';
 import 'package:sales_app/screens/onboarding/login.dart';
 import 'package:sales_app/screens/product_details.dart';
 import 'package:sales_app/screens/profile.dart';
+import 'package:sales_app/screens/search.dart';
 import 'package:sales_app/widgets/button.dart';
 import 'package:sales_app/widgets/drawer.dart';
 import 'package:sales_app/widgets/inputs.dart';
+import 'package:sales_app/widgets/navbar.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -68,6 +70,7 @@ class HomeScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: NavBar(),
           floatingActionButton: Obx(
             () => authController.userData.value != null
                 ? SpeedDial(
@@ -121,6 +124,7 @@ class HomeScreen extends StatelessWidget {
                                               shopController.shopNameController,
                                           hint: "Shop Name",
                                           obscure: false,
+                                          enabled: true,
                                           label: "Shop Name"),
                                       SizedBox(
                                         height: 20,
@@ -130,7 +134,8 @@ class HomeScreen extends StatelessWidget {
                                               shopController.locationController,
                                           hint: "Location",
                                           obscure: false,
-                                          label: "Location"),
+                                          label: "Location",
+                                          enabled: true),
                                       Expanded(child: Text("")),
                                       shopController.isLoading.value == true
                                           ? Center(
@@ -272,7 +277,7 @@ class HomeScreen extends StatelessWidget {
                                               fontWeight: FontWeight.w800),
                                         ),
                                         Text(
-                                          '${authController.userData.value!.shop == null ? '' : authController.userData.value!.shop}',
+                                          '${authController.userData.value!.shop == null ? '' : authController.userData.value!.shop!.name}',
                                           style: GoogleFonts.lato(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w400),
@@ -464,30 +469,28 @@ class HomeScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromARGB(255, 227, 224, 224)
-                                          .withOpacity(0.5),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ]),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Search pinnaple',
-                                    hintStyle: GoogleFonts.lato(fontSize: 20),
-                                    icon: const Icon(
-                                      Icons.search,
-                                      size: 30,
-                                      color: Colors.redAccent,
-                                    )),
+                            InkWell(
+                              onTap: () {
+                                Get.to(Search());
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color:
+                                            Color.fromARGB(255, 227, 224, 224)
+                                                .withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ]),
+                                child: Text("Search pinnaple"
+                                ),
                               ),
                             ),
                             const CircleAvatar(
@@ -558,7 +561,7 @@ class HomeScreen extends StatelessWidget {
                           () => Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10)),
-                            height: MediaQuery.of(context).size.height * 0.2,
+                            height: MediaQuery.of(context).size.height * 0.3,
                             child: productController.isLoading.value == true
                                 ? Center(child: CircularProgressIndicator())
                                 : productController.productList.length == 0
@@ -569,7 +572,8 @@ class HomeScreen extends StatelessWidget {
                                             mainAxisSpacing: 1.0,
                                             scrollDirection: Axis.horizontal,
                                             children: List.generate(
-                                                productController.productList.length, (index) {
+                                                productController.productList
+                                                    .length, (index) {
                                               ProductModel product =
                                                   productController.productList
                                                       .elementAt(index);
@@ -585,11 +589,16 @@ class HomeScreen extends StatelessWidget {
                                                         ));
                                                       },
                                                       child: Container(
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
                                                         height: MediaQuery.of(
                                                                     context)
                                                                 .size
                                                                 .height *
-                                                            0.1,
+                                                            0.2,
                                                         child: product
                                                                     .imageurl ==
                                                                 ''

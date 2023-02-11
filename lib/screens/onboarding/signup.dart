@@ -43,6 +43,7 @@ class SignUp extends StatelessWidget {
                   height: 40,
                 ),
                 CustomInput(
+                  enabled: true,
                   controller: authController.emailController,
                   hint: "Enter your email",
                   label: "Email",
@@ -53,6 +54,7 @@ class SignUp extends StatelessWidget {
                   height: 20,
                 ),
                 CustomInput(
+                  enabled: true,
                   controller: authController.fnameController,
                   hint: "Enter your first name",
                   label: "First Name",
@@ -63,6 +65,7 @@ class SignUp extends StatelessWidget {
                   height: 20,
                 ),
                 CustomInput(
+                  enabled: true,
                   controller: authController.lnameController,
                   hint: "Enter your last name",
                   label: "Last Name",
@@ -73,6 +76,7 @@ class SignUp extends StatelessWidget {
                   height: 20,
                 ),
                 CustomInput(
+                  enabled: true,
                   controller: authController.passwordController,
                   hint: "Enter your password",
                   label: "Password",

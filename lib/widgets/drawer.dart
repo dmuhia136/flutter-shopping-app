@@ -38,6 +38,15 @@ class CustomDrawer extends StatelessWidget {
             height: 10,
           ),
           Text("${authController.userData.value!.email} "),
+             SizedBox(
+            height: 10,
+          ),
+          Text("${authController.userData.value!.shop!.name} "),
+    SizedBox(
+            height: 10,
+          ),
+          Text("${authController.userData.value!.shop!.location} "),
+
           Expanded(
             child: Text(""),
           ),

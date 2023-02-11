@@ -1,14 +1,33 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sales_app/screens/homescreen.dart';
+import 'package:sales_app/screens/messages.dart';
+import 'package:sales_app/screens/profile.dart';
 
 class AddController extends GetxController {
   final Rx<XFile> image = XFile("").obs;
   RxInt num = RxInt(0);
   RxList userdata = RxList([]);
   var databse = FirebaseFirestore.instance;
+
+
+    int selectedIndex = 0.obs as int;  
+  static  List<Widget> widgetOptions = <Widget>[  
+   HomeScreen(),  
+   Profile(),
+   Messages()
+  ].obs;  
+  
+  // void _onItemTapped(int index) {  
+  //   setState(() {  
+  //     _selectedIndex = index;  
+  //   });  
+  // }  
+
   void onInit() {
     super.onInit();
     fetchUser();

@@ -21,6 +21,7 @@ class ProductController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController countController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   RxString initialCategory = RxString('Fruits');
   var categoryId = "".obs;
   RxBool isSave = RxBool(false);

@@ -43,16 +43,16 @@ class ChatController extends GetxController {
         "recieverImg": reciever.profileimage,
         "recieverName": "${reciever.firstname} ${reciever.lastname}",
         "Message": messageController.text,
-        "Time": DateTime.now().microsecondsSinceEpoch,
-        "sentImg": imageUrl
+        "Time": Timestamp.now(),
+        "sentImg": imageUrl,
+
       };
       print(chat);
       await database
           .collection("Messages")
           .doc(authController.userData.value!.sId)
           .collection("mychats")
-          .doc("${authController.userData.value!.sId}${reciever.sId}")
-          .collection("all").doc()
+          .doc()
           .set(chat)
           .onError((e, _) => print("Error writing document: $e"));
 

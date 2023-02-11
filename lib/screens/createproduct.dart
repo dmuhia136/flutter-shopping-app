@@ -56,6 +56,7 @@ class CreateProduct extends StatelessWidget {
                   hint: "Product name",
                   label: "Product name:",
                   obscure: false,
+                  enabled: true,
                 ),
                 SizedBox(
                   height: 15,
@@ -65,6 +66,7 @@ class CreateProduct extends StatelessWidget {
                   hint: "Product description",
                   label: "Product descriptions:",
                   obscure: false,
+                  enabled: true,
                 ),
                 SizedBox(
                   height: 15,
@@ -78,9 +80,11 @@ class CreateProduct extends StatelessWidget {
                           productController.image.path,
                           productController.image.name);
                     },
-                    child: productController.isUploading.value == true
-                        ? Center(child: CircularProgressIndicator())
-                        : Text("Select image")),
+                    child: Obx(()=>
+                      productController.isUploading.value == true
+                          ? Center(child: CircularProgressIndicator())
+                          : Text("Select image"),
+                    )),
                 productController.image.path.length == 0
                     ? Text("")
                     : Stack(
@@ -137,6 +141,7 @@ class CreateProduct extends StatelessWidget {
                   label: "Product count:",
                   type: TextInputType.number,
                   obscure: false,
+                  enabled: true,
                 ),
                 SizedBox(
                   height: 15,
@@ -147,6 +152,7 @@ class CreateProduct extends StatelessWidget {
                   label: "Product price:",
                   type: TextInputType.number,
                   obscure: false,
+                  enabled: true,
                 ),
                 SizedBox(
                   height: 15,
@@ -160,10 +166,12 @@ class CreateProduct extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             content: Container(
-                              child: productController.isLoading.value == true
-                                  ? Center(child: CircularProgressIndicator())
-                                  : CircleAvatar(
-                                      radius: 30, child: Icon(Icons.check)),
+                              child: Obx(()=>
+                                productController.isLoading.value == true
+                                    ? Center(child: CircularProgressIndicator())
+                                    : CircleAvatar(
+                                        radius: 30, child: Icon(Icons.check)),
+                              ),
                             ))
                         : Text("");
                   },

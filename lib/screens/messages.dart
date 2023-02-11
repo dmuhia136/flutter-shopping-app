@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sales_app/controllers/addController.dart';
+import 'package:sales_app/controllers/authController.dart';
 import 'package:sales_app/controllers/chatController.dart';
 import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/models/chat.dart';
@@ -14,12 +15,14 @@ class Messages extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
   AddController addController = Get.find<AddController>();
   ChatController chatController = Get.find<ChatController>();
+  AuthController authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             floatingActionButton: FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
+                await authController.fetchAllUsers();
                 Get.to(Contacts());
               },
               child: Icon(Icons.message),
@@ -61,8 +64,7 @@ class Messages extends StatelessWidget {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.9,
-                    child: 
-                    ListView.builder(
+                    child: ListView.builder(
                         itemCount: chatController.chatList.length,
                         shrinkWrap: true,
                         // physics: ScrollPhysics(parent: AlwaysScrollableScrollPhysics()),

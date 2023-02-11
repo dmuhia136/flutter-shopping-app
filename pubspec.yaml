@@ -53,6 +53,7 @@ dependencies:
   lottie: ^2.2.0
   permission_handler: 
   get_time_ago: ^1.1.8
+  floating_bottom_navigation_bar: ^1.5.2
   
 dev_dependencies:
   flutter_test:
