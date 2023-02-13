@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DbBase {
   var postRequestType = "POST";
@@ -11,7 +12,9 @@ class DbBase {
       {Map<String, dynamic>? body, Map<String, String>? headers}) async {
     try {
       print(link);
-      headers ??= {'Content-Type': 'application/json'};
+      final prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      headers ??= {'Content-Type': 'application/json','Bearer': token.toString()};
 
       var request = http.Request(type, Uri.parse(link));
 

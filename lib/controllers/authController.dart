@@ -89,9 +89,10 @@ class AuthController extends GetxController {
         Get.snackbar("Error!!", response['message']);
       }
       await prefs.setString('userid', response['body']['_id'].toString());
+      await prefs.setString('token', response['accessToken']);
       userData.value = UserModel.fromJson(response['body']);
       clearControllers();
-      Get.to(HomeScreen());
+      Get.to(() => HomeScreen());
     } catch (e) {
       print(e);
     }
@@ -109,14 +110,12 @@ class AuthController extends GetxController {
     };
 
     var response = await UserClient.createUser(user);
-    print("iii ${response['body']}");
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userid', response['body']['_id'].toString());
-
     userData.value = UserModel.fromJson(response['body']);
     Fluttertoast.showToast(msg: "Your account has been created.");
     clearControllers();
-    Get.to(HomeScreen());
+    Get.to(() => HomeScreen());
     isLoading.value == false;
   }
 
@@ -184,7 +183,9 @@ class AuthController extends GetxController {
   }
 
   fetchAllUsers() async {
+    var userid = await Functions().userId();
     List response = await UserClient.fetchAllUsers();
-    allUsers.assignAll(response.map((e) => UserModel.fromJson(e)));
+    List user = response.indexWhere((element) => element._id != userid) as List;
+    allUsers.assignAll(user.map((e) => UserModel.fromJson(e)));
   }
 }

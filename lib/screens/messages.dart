@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sales_app/constants/colors.dart';
 import 'package:sales_app/controllers/addController.dart';
 import 'package:sales_app/controllers/authController.dart';
 import 'package:sales_app/controllers/chatController.dart';
@@ -31,7 +32,7 @@ class Messages extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    color: Colors.tealAccent,
+                    color: CustomColors().primary,
                     width: MediaQuery.of(context).size.width * 1.0,
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: Row(

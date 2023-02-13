@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +5,7 @@ import 'package:sales_app/controllers/chatController.dart';
 import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/models/user.dart';
 
+// ignore: must_be_immutable
 class Chat extends StatelessWidget {
   int index;
   bool? sent = true;
@@ -103,7 +102,7 @@ class Chat extends StatelessWidget {
                     XFile? data = await chatController.picker
                         .pickImage(source: ImageSource.gallery);
                     chatController.imageUrl =
-                        await Functions().uploadImage(data!.path, data!.name);
+                        await Functions().uploadImage(data!.path, data.name);
                   },
                   icon: Icon(Icons.image)),
               InkWell(

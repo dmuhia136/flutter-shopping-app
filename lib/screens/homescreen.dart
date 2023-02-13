@@ -105,21 +105,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Scaffold(
-          bottomNavigationBar: FloatingNavbar(
-            backgroundColor: CustomColors().primary,
-            onTap: _onItemTapped,
-            currentIndex: _selectedIndex,
-            items: [
-              FloatingNavbarItem(icon: Icons.home, title: 'Home'),
-              FloatingNavbarItem(
-                  icon: Icons.chat_bubble_outline, title: 'Chats'),
-              FloatingNavbarItem(icon: Icons.settings, title: 'Settings'),
-            ],
+          bottomNavigationBar: Obx(
+            () => authController.userData.value != null
+                ? FloatingNavbar(
+                    backgroundColor: CustomColors().primary,
+                    onTap: _onItemTapped,
+                    currentIndex: _selectedIndex,
+                    items: [
+                      FloatingNavbarItem(icon: Icons.home, title: 'Home'),
+                      FloatingNavbarItem(
+                          icon: Icons.chat_bubble_outline, title: 'Chats'),
+                      FloatingNavbarItem(
+                          icon: Icons.settings, title: 'Settings'),
+                    ],
+                  )
+                : Text(""),
           ),
           floatingActionButton: Obx(
             () => authController.userData.value != null
                 ? SpeedDial(
                     child: Icon(Icons.add),
+                    openBackgroundColor: CustomColors().secondary,
                     speedDialChildren: <SpeedDialChild>[
                       SpeedDialChild(
                         child: Icon(Icons.insert_emoticon_outlined),

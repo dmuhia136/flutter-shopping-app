@@ -7,6 +7,8 @@ class ProductModel {
   int? price;
   String? imageurl;
   UserModel? owner;
+  int? count;
+  int? total;
   CategoryModel? category;
   int? iV;
 
@@ -17,18 +19,20 @@ class ProductModel {
       this.imageurl,
       this.owner,
       this.category,
-      this.iV});
+      this.iV,
+      this.total,
+      this.count});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     price = json['price'];
     imageurl = json['imageurl'];
-    owner = json['owner'] != null ? new UserModel.fromJson(json['owner']) : null;
+    owner =
+        json['owner'] != null ? new UserModel.fromJson(json['owner']) : null;
     category = json['category'] != null
         ? new CategoryModel.fromJson(json['category'])
         : null;
     iV = json['__v'];
   }
-
 }

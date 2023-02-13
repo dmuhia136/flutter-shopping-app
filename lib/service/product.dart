@@ -9,7 +9,6 @@ class ProductClient {
     var response =
         await DbBase().databaseRequest(product, DbBase().getRequestType);
     var data = jsonDecode(response);
-    print("tdasdas ${data}");
     return data;
   }
 

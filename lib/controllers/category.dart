@@ -16,9 +16,7 @@ class CategoryController extends GetxController {
     try {
       isLoading.value = true;
       List response = await CategoryClient.fetchCategory();
-
       categoryList.assignAll(response.map((e) => CategoryModel.fromJson(e)));
-
       isLoading.value = false;
     } catch (e) {
     } finally {

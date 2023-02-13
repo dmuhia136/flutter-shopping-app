@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sales_app/controllers/category.dart';
 import 'package:sales_app/controllers/product.dart';
+import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/models/category.dart';
 import 'package:sales_app/service/category.dart';
 import 'package:sales_app/service/product.dart';
@@ -76,12 +77,12 @@ class CreateProduct extends StatelessWidget {
                       productController.image = (await productController.picker
                           .pickImage(source: ImageSource.gallery))!;
                       print(productController.image);
-                      await productController.uploadImage(
+                      productController.imageUrl = Functions().uploadImage(
                           productController.image.path,
                           productController.image.name);
                     },
-                    child: Obx(()=>
-                      productController.isUploading.value == true
+                    child: Obx(
+                      () => productController.isUploading.value == true
                           ? Center(child: CircularProgressIndicator())
                           : Text("Select image"),
                     )),
@@ -166,8 +167,8 @@ class CreateProduct extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             content: Container(
-                              child: Obx(()=>
-                                productController.isLoading.value == true
+                              child: Obx(
+                                () => productController.isLoading.value == true
                                     ? Center(child: CircularProgressIndicator())
                                     : CircleAvatar(
                                         radius: 30, child: Icon(Icons.check)),

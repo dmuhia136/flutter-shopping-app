@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sales_app/constants/colors.dart';
 import 'package:sales_app/controllers/authController.dart';
 import 'package:sales_app/screens/profile.dart';
 import 'package:sales_app/screens/welcome.dart';
@@ -28,9 +30,13 @@ class CustomDrawer extends StatelessWidget {
               Get.to(Profile());
             },
             child: CircleAvatar(
+              radius: 50,
               backgroundImage: NetworkImage(
                   authController.userData.value!.profileimage.toString()),
             ),
+          ),
+          SizedBox(
+            height: 20,
           ),
           Text(
               "${authController.userData.value!.firstname} ${authController.userData.value!.lastname}"),
@@ -38,15 +44,34 @@ class CustomDrawer extends StatelessWidget {
             height: 10,
           ),
           Text("${authController.userData.value!.email} "),
-             SizedBox(
+          SizedBox(
             height: 10,
           ),
           Text("${authController.userData.value!.shop!.name} "),
-    SizedBox(
+          SizedBox(
             height: 10,
           ),
           Text("${authController.userData.value!.shop!.location} "),
-
+          SizedBox(
+            height: 20,
+          ),
+          InkWell(
+            onTap: () {
+              Get.to(() => Profile());
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: CustomColors().secondary,
+                  borderRadius: BorderRadius.circular(20)),
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  "Visit profile",
+                  style: GoogleFonts.lato(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: Text(""),
           ),
@@ -64,6 +89,9 @@ class CustomDrawer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20)),
             ),
           ),
+          SizedBox(
+            height: 20,
+          )
         ])).animate().fade(delay: Duration(microseconds: 100)).shimmer();
   }
 }

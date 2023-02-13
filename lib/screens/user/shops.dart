@@ -19,46 +19,17 @@ class Shops extends StatelessWidget {
             borderRadius: BorderRadius.circular(20)),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 18.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "Shop name: ",
-                        style: GoogleFonts.lato(fontSize: 20),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        authController.userData.value!.shop!.name.toString(),
-                        style: GoogleFonts.lato(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Shop location: ",
-                        style: GoogleFonts.lato(fontSize: 20),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        authController.userData.value!.shop!.location
-                            .toString(),
-                        style: GoogleFonts.lato(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
+            ListTile(
+                title: Text(
+                  authController.userData.value!.shop!.name.toString(),
+                ),
+                subtitle:
+                    Text("${authController.userData.value?.email.toString()} "),
+                leading: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(
+                      authController.userData.value!.profileimage.toString()),
+                ))
           ],
         ),
       ),

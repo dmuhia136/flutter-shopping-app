@@ -37,24 +37,40 @@ class ProductController extends GetxController {
   }
 
   addToCart(ProductModel product) async {
+    print("aasdasdasdas");
+    int index = cart.indexWhere((element) => element.sId == product.sId);
+    if (index != -1) {
+      print("my indexsa $index,${cart[index].count}");
+      cart[index].count += 1;
+      cart[index].total = cart[index].count * cart[index].price;
+      getTotalCart();
+    } else {
       cart.add(product);
+      product.count = 1;
+      product.total = product.price;
+      getTotalCart();
+    }
+  }
 
-    // int item = cart.indexOf(product);
-    // if (item != -1) {
-    //   cart.add(product);
-    //   print("$product is found at index $item");
-    //   // product.count = product.count! + 1;
-    //   // product.price = product.price! * product.count!;
-    //   total += product.price!;
-    //   print(total);
-    // }
-    //  else {
-    //   cart.add(product);
-    //   product.count = product.count! + 1;
-    //   product.price = product.price! * product.count!;
-    //   total += product.price!;
-    //   print(total);
-    // }
+  removeFromCart(ProductModel product) {
+    int index = cart.indexWhere((element) => element.sId == product.sId);
+    if (index != -1) {
+      cart.removeWhere((element) => element.sId == cart[index].sId);
+      Fluttertoast.showToast(msg: "${product.name} removed");
+    }
+    getTotalCart();
+  }
+
+  getTotalCart() {
+    print("dasdasdasdas");
+    try {
+      cart.map((element) {
+        total.value += element.total as int;
+        print(total.value);
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: "$e");
+    }
   }
 
   clearCart() {
@@ -92,7 +108,6 @@ class ProductController extends GetxController {
     try {
       isLoading.value = true;
       String id = await Functions().userId();
-
       Map<String, dynamic> data = {
         "name": pnameController.text,
         "description": descriptionController.text,
@@ -102,17 +117,15 @@ class ProductController extends GetxController {
         "category": categoryId.value,
         "imageurl": imageUrl.toString(),
       };
-      print(data);
 
       var result = await ProductClient.createProduct(data);
-      print("rsdajs $result");
       if (result['status'] == 200) {
         productList.refresh();
         disposer();
       }
       isLoading.value = false;
-    } catch (e) {
-      print(e);
+    } catch (e, s) {
+      printError(info: "$e", logFunction: () => print("$e,$s"));
     }
   }
 
@@ -122,36 +135,5 @@ class ProductController extends GetxController {
     priceController.clear();
     countController.clear();
     image == null;
-  }
-
-  uploadImage(String url, String name) async {
-    try {
-      isUploading.value = true;
-      final _firebaseStorage = FirebaseStorage.instance;
-      var file = File(url);
-      if (image != null) {
-        //Upload to Firebase
-        var snapshot = await _firebaseStorage
-            .ref()
-            .child('images/$name')
-            .putFile(file)
-            .whenComplete(() => null);
-        var downloadUrl = await snapshot.ref.getDownloadURL();
-        print("url da aaaa $downloadUrl");
-        imageUrl = downloadUrl;
-        Fluttertoast.showToast(
-            msg: "Image uploaded",
-            backgroundColor: Colors.green,
-            textColor: Colors.black);
-        isUploading.value = false;
-      } else {
-        Fluttertoast.showToast(
-            msg: "Image upload failed",
-            backgroundColor: Colors.red,
-            textColor: Colors.white);
-        isUploading.value = false;
-        print('No Image Path Received');
-      }
-    } catch (e) {}
   }
 }
