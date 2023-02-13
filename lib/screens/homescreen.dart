@@ -22,6 +22,7 @@ import 'package:sales_app/functions/function.dart';
 import 'package:sales_app/models/category.dart';
 import 'package:sales_app/models/product.dart';
 import 'package:sales_app/models/shop.dart';
+import 'package:sales_app/screens/cart.dart';
 import 'package:sales_app/screens/createproduct.dart';
 import 'package:sales_app/screens/homepage.dart';
 import 'package:sales_app/screens/messages.dart';
@@ -75,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     Messages(),
+    Cart(),
     Profile()
   ];
 
@@ -115,6 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       FloatingNavbarItem(icon: Icons.home, title: 'Home'),
                       FloatingNavbarItem(
                           icon: Icons.chat_bubble_outline, title: 'Chats'),
+                      FloatingNavbarItem(
+                          icon: Icons.production_quantity_limits,
+                          title: 'Cart'),
                       FloatingNavbarItem(
                           icon: Icons.settings, title: 'Settings'),
                     ],

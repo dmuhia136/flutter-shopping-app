@@ -31,6 +31,7 @@ class ProductController extends GetxController {
   RxInt total = RxInt(0);
   String imageUrl = "";
   RxBool isUploading = RxBool(false);
+  RxBool isCheckoutLoading = RxBool(false);
   void onInit() {
     super.onInit();
     fetchProducts();
@@ -76,6 +77,15 @@ class ProductController extends GetxController {
   clearCart() {
     cart.clear();
     total.value = 0;
+  }
+
+  checkout() async {
+    try {
+      isCheckoutLoading.value = true;
+      Map<String, dynamic> data = {"cart": cart};
+      
+      isCheckoutLoading.value = false;
+    } catch (e) {}
   }
 
   fetchProducts() async {

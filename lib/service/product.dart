@@ -27,5 +27,10 @@ class ProductClient {
     return data;
   }
 
-  
+  static checkout(Map<String, dynamic> product) async {
+    var result = await DbBase().databaseRequest(
+        '$product/checkout', DbBase().postRequestType,
+        body: product);
+    print(result);
+  }
 }
